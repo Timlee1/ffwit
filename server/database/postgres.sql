@@ -1,0 +1,7 @@
+CREATE DATABASE ffwit;
+
+CREATE TABLE  IF NOT EXISTS users (
+  id SERIAL PRIMARY KEY, 
+  email VARCHAR(64) NOT NULL,
+  password_hash VARCHAR(128) NOT NULL
+);
