@@ -1,18 +1,11 @@
 import { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
 import { useCreateUserMutation } from '../features/users/usersApiSlice'
 
 const SignUp = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [signUp, {
-    isLoading,
-    isSuccess,
-    isError,
-    error
-  }] = useCreateUserMutation()
-  const [errMsg, setErrMsg] = useState('')
-  const navigate = useNavigate()
+  const [signUp] = useCreateUserMutation()
+  const [msg, setMsg] = useState('')
 
   const handleEmailInput = (e) => setEmail(e.target.value)
   const handlePasswordInput = (e) => setPassword(e.target.value)
@@ -22,16 +15,12 @@ const SignUp = () => {
       await signUp({ email, password }).unwrap()
       setEmail('')
       setPassword('')
-      navigate('/login')
+      setMsg('Verifcation link sent to email')
     } catch (err) {
-      if (!err.status) {
-        setErrMsg('No Server Response');
-      } else if (err.status === 400) {
-        setErrMsg('Missing Email or Password');
-      } else if (err.status === 409) {
-        setErrMsg('Email already used');
+      if (err?.data?.message) {
+        setMsg(err.data.message);
       } else {
-        setErrMsg(err.data?.message);
+        setMsg('No Server Response');
       }
     }
   }
@@ -49,19 +38,19 @@ const SignUp = () => {
             id="email"
             value={email}
             onChange={handleEmailInput}
-            autoComplete="off"
             required
           />
           <label htmlFor="password">Password:</label>
           <input
             type="password"
             id="password"
-            onChange={handlePasswordInput}
             value={password}
+            onChange={handlePasswordInput}
             required
           />
           <button>Sign Up</button>
         </form>
+        {msg && <p>{msg}</p>}
       </main>
     </section>
   )

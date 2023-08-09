@@ -18,45 +18,45 @@ const transporter = nodemailer.createTransport({
   sendingRate: 1
 });
 
-const getUser = asyncHandler(async (req, res) => {
-  const { email } = req.body
-})
-
-const getAllUsers = asyncHandler(async (req, res) => {
-  const users = await postgres.query("SELECT id, email FROM users")
-  if (!users) {
-    return res.status(400).json({ message: 'No users found' })
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await postgres.query("SELECT id, email FROM users")
+    if (!users) {
+      return res.status(400).json({ message: 'No users found' })
+    }
+    res.json(users)
+  } catch (err) {
+    return res.status(400).json({ message: 'Error' })
   }
-  res.json(users)
-})
+}
 
 // Create a user 
 // @route POST /users
-const createUser = asyncHandler(async (req, res) => {
-  const { email, password } = req.body
+const createUser = async (req, res) => {
+  try {
+    const { email, password } = req.body
 
-  if (!email || !password) {
-    return res.status(400).json({ message: 'All fields are required' })
-  }
+    if (!email || !password) {
+      return res.status(400).json({ message: 'All fields are required' })
+    }
 
-  const find_duplicate_query = {
-    text: 'SELECT * FROM users WHERE email = $1',
-    values: [email]
-  }
-  const duplicate = await postgres.query(find_duplicate_query)
-  if (duplicate.rows.length) {
-    return res.status(409).json({ message: 'Email already used' })
-  }
+    const find_duplicate_query = {
+      text: 'SELECT * FROM users WHERE email = $1',
+      values: [email]
+    }
+    const duplicate = await postgres.query(find_duplicate_query)
 
-  const hashedPassword = await bcrypt.hash(password, 10) //salt rounds 
+    if (duplicate.rows.length) {
+      return res.status(409).json({ message: 'Email already used' })
+    }
 
-  const create_user_query = {
-    text: 'INSERT INTO users(email, password_hash) VALUES($1, $2)',
-    values: [email, hashedPassword]
-  }
+    const hashedPassword = await bcrypt.hash(password, 10) //salt rounds 
 
-  const create_user = await postgres.query(create_user_query)
-  if (create_user) {
+    const create_user_query = {
+      text: 'INSERT INTO users(email, password_hash) VALUES($1, $2)',
+      values: [email, hashedPassword]
+    }
+    await postgres.query(create_user_query)
     try {
       const token = jwt.sign(
         {
@@ -65,7 +65,7 @@ const createUser = asyncHandler(async (req, res) => {
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: VERIFICATION_TOKEN_EXPIRATION }
       )
-      const url = process.env.SERVER + `/api/users/verify?token=${token}`
+      const url = process.env.CLIENT + `/verify?token=${token}`
       await transporter.sendMail(
         {
           from: "timothy.j.lee0@gmail.com", //CHANGE THIS TO EMAIL VAR IN PRODUCTION
@@ -73,18 +73,16 @@ const createUser = asyncHandler(async (req, res) => {
           subject: "Message",
           html: `Please click this link to confirm your email: <a href="${url}">${url}</a>`
         },
-
       );
+      res.status(201).json({ message: `New user ${email} created` })
     } catch (err) {
-      console.log(err)
+      return res.status(400).json({ message: 'Unable to send verification link' })
     }
-
-
-    res.status(201).json({ message: `New user ${email} created` })
-  } else {
-    res.status(400).json({ message: 'Unable to create user' })
+  } catch (err) {
+    return res.status(400).json({ message: 'Unable to create user' })
   }
-})
+
+}
 
 // Update a user 
 // @route PATCH /users
@@ -138,34 +136,27 @@ const deleteUser = asyncHandler(async (req, res) => {
   res.status(201).json({ message: 'Placeholder for now' })
 })
 
-const verifyUser = asyncHandler(async (req, res) => {
-  const { token } = req.params
-  jwt.verify(
-    token,
-    process.env.ACCESS_TOKEN_SECRET,
-    (err, decoded) => {
-      if (err) return res.status(403).json({ message: 'Forbidden' })
-      email = decoded.email
-    }
-  )
-  const update_user_query = {
-    text: ' UPDATE users SET is_verified = TRUE WHERE email = $1',
-    values: [email]
-  }
+
+const verifyUser = async (req, res) => {
   try {
+    const { token } = req.params
+    jwt.verify(
+      token,
+      process.env.ACCESS_TOKEN_SECRET,
+      (err, decoded) => {
+        if (err) return res.status(403).json({ message: 'Forbidden' })
+        email = decoded.email
+      }
+    )
+    const update_user_query = {
+      text: ' UPDATE users SET is_verified = TRUE WHERE email = $1',
+      values: [email]
+    }
     await postgres.query(update_user_query)
     res.status(201).json({ message: `User Verified` })
-
   } catch (error) {
     return res.status(403).json({ message: 'Unable to Verify Email' })
   }
-
-
-
-
-})
-
-
-
+}
 
 module.exports = { getAllUsers, createUser, updateUser, deleteUser, verifyUser }

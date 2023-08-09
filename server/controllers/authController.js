@@ -20,6 +20,7 @@ const login = asyncHandler(async (req, res) => {
     text: 'SELECT * FROM users WHERE email = $1',
     values: [email]
   }
+
   const user = await postgres.query(find_user_query)
 
   if (!user.rows.length) {
@@ -31,6 +32,14 @@ const login = asyncHandler(async (req, res) => {
   if (!match) {
     return res.status(401).json({ message: 'Unauthorized' })
   }
+
+  const is_verified = user.rows[0].is_verified
+  if (!is_verified) {
+    return res.status(401).json({ message: 'Not Verified' })
+  }
+
+
+
   const accessToken = jwt.sign(
     {
       "UserInfo": {

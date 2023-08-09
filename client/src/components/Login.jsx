@@ -9,10 +9,10 @@ import usePersist from '../hooks/usePersist'
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [errMsg, setErrMsg] = useState('')
+  const [msg, setMsg] = useState('')
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [login, { isLoading }] = useLoginMutation()
+  const [login] = useLoginMutation()
   const [persist, setPersist] = usePersist()
 
   const handleSubmit = async (e) => {
@@ -22,31 +22,24 @@ const Login = () => {
       const { accessToken } = await login({ email, password }).unwrap()
       //set credentials using access token
       dispatch(setCredentials({ accessToken }))
+      setMsg('Logged in')
       setEmail('')
       setPassword('')
-      navigate('/logout')
+      navigate('/')
     } catch (err) {
-      if (!err.status) {
-        setErrMsg('No Server Response');
-      } else if (err.status === 400) {
-        setErrMsg('Missing Email or Password');
-      } else if (err.status === 401) {
-        setErrMsg('Unauthorized');
+      if (err?.data?.message) {
+        setMsg(err.data.message);
       } else {
-        setErrMsg(err.data?.message);
+        setMsg('No Server Response');
       }
     }
   }
 
   const handleUserInput = (e) => setEmail(e.target.value)
-  const handlePwdInput = (e) => setPassword(e.target.value)
+  const handlePasswordInput = (e) => setPassword(e.target.value)
   const handleToggle = () => setPersist(prev => !prev)
 
-  //const errClass = errMsg ? "errmsg" : "offscreen"
-
-  if (isLoading) return <p>Loading...</p>
-
-  const content = (
+  return (
     <section>
       <header>
         <h1>Login</h1>
@@ -59,19 +52,18 @@ const Login = () => {
             id="email"
             value={email}
             onChange={handleUserInput}
-            autoComplete="off"
             required
           />
           <label htmlFor="password">Password:</label>
           <input
             type="password"
             id="password"
-            onChange={handlePwdInput}
             value={password}
+            onChange={handlePasswordInput}
             required
           />
           <button>Sign In</button>
-          <label htmlFor="persist" className="form__persist">
+          <label htmlFor="persist">
             <input
               type="checkbox"
               id="persist"
@@ -81,12 +73,10 @@ const Login = () => {
             Trust This Device
           </label>
         </form>
-        <p>{errMsg}</p>
-        <Link to="/">Back to Home</Link>
+        {msg && <p>{msg}</p>}
       </main>
     </section>
   )
-
-  return content
 }
+
 export default Login

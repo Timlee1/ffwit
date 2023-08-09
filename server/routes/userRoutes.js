@@ -11,7 +11,7 @@ router.route('/signup')
 router.route('/verify/:token')
   .get(userController.verifyUser)
 
-//router.use(verifyJWT)
+router.use(verifyJWT)
 
 //private routes
 router.route('/')

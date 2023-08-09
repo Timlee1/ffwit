@@ -1,46 +1,36 @@
 import { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useSendLogoutMutation } from '../features/auth/authApiSlice'
 
 const Logout = () => {
-  const [errMsg, setErrMsg] = useState('')
+  const [msg, setMsg] = useState('')
   const navigate = useNavigate()
-  const [sendLogout, {
-    isLoading,
-    isSuccess,
-    isError,
-    error
-  }] = useSendLogoutMutation()
+  const [sendLogout] = useSendLogoutMutation()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
       await sendLogout()
+      setMsg("Logged out")
       navigate('/')
     } catch (err) {
-      setErrMsg(err.data?.message)
+      if (err?.data?.message) {
+        setMsg(err.data.message);
+      } else {
+        setMsg('No Server Response');
+      }
     }
   }
 
-  if (isLoading) return <p>Logging Out...</p>
-
-  if (isError) return <p>Error: {error.data?.message}</p>
-
-  const logoutButton = (
-    <button
-      onClick={handleSubmit}
-    >Logout
-    </button>
-  )
-
-  const content = (
+  return (
     <>
-      {logoutButton}
-      <p>{errMsg}</p>
-      <Link to="/">Back to Home</Link>
+      <button
+        onClick={handleSubmit}
+      >Logout
+      </button>
+      {msg && <p>{msg}</p>}
     </>
   )
-  return content
 }
 
 export default Logout
