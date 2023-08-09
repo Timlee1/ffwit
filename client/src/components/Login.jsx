@@ -74,6 +74,7 @@ const Login = () => {
           </label>
         </form>
         {msg && <p>{msg}</p>}
+        <Link to="/forgot-password">Forgot Password</Link>
       </main>
     </section>
   )

@@ -1,12 +1,10 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import UsersList from '../features/users/UsersList'
 
 function Home() {
   return (
     <>
-      <div>Home</div>
-
+      <h1>Home</h1>
       <UsersList />
     </>
   )

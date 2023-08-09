@@ -7,9 +7,12 @@ const verifyJWT = require('../middleware/verifyJWT')
 //public routes
 router.route('/signup')
   .post(userController.createUser)
-
 router.route('/verify/:token')
   .get(userController.verifyUser)
+router.route('/forgotPassword')
+  .post(userController.forgotPassword)
+router.route('/resetPassword')
+  .post(userController.resetPassword)
 
 router.use(verifyJWT)
 

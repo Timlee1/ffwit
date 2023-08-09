@@ -4,10 +4,9 @@ import { Link } from 'react-router-dom'
 function Navbar({ auth }) {
   return (
     <>
-      <p>{auth && 'auth'}</p>
-      <Link to="/signup">Signup</Link>
-      <Link to="/login">Login</Link>
-      <Link to="/logout">Logout</Link>
+      {!auth && <Link to="/signup">Signup</Link>}
+      {!auth && <Link to="/login">Login</Link>}
+      {auth && <Link to="/logout">Logout</Link>}
     </>
   )
 }

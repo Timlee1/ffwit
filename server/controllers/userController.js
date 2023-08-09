@@ -149,14 +149,84 @@ const verifyUser = async (req, res) => {
       }
     )
     const update_user_query = {
-      text: ' UPDATE users SET is_verified = TRUE WHERE email = $1',
+      text: 'UPDATE users SET is_verified = TRUE WHERE email = $1',
       values: [email]
     }
     await postgres.query(update_user_query)
     res.status(201).json({ message: `User Verified` })
   } catch (error) {
-    return res.status(403).json({ message: 'Unable to Verify Email' })
+    return res.status(403).json({ message: 'Unable to verify email' })
   }
 }
 
-module.exports = { getAllUsers, createUser, updateUser, deleteUser, verifyUser }
+const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body
+
+    if (!email) {
+      return res.status(400).json({ message: 'All fields are required' })
+    }
+
+    const find_user_query = {
+      text: 'SELECT * FROM users WHERE email = $1',
+      values: [email]
+    }
+    const user = await postgres.query(find_user_query)
+
+    if (!user.rows.length) {
+      return res.status(409).json({ message: 'Account not found' })
+    }
+
+    const token = jwt.sign(
+      {
+        "email": email,
+      },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: VERIFICATION_TOKEN_EXPIRATION }
+    )
+    const url = process.env.CLIENT + `/reset-password?token=${token}`
+    await transporter.sendMail(
+      {
+        from: "timothy.j.lee0@gmail.com", //CHANGE THIS TO EMAIL VAR IN PRODUCTION
+        to: "timothy.j.lee0@gmail.com",
+        subject: "Message",
+        html: `Please click this link to reset your password: <a href="${url}">${url}</a>`
+      },
+    );
+
+    res.status(201).json({ message: `Reset password email was sent` })
+
+  } catch (err) {
+    return res.status(400).json({ message: 'Unable to send email' })
+
+  }
+}
+
+const resetPassword = async (req, res) => {
+  try {
+    const { token, password } = req.body
+    jwt.verify(
+      token,
+      process.env.ACCESS_TOKEN_SECRET,
+      (err, decoded) => {
+        if (err) return res.status(403).json({ message: 'Forbidden' })
+        email = decoded.email
+      }
+    )
+    console.log(email)
+    const hashedPassword = await bcrypt.hash(password, 10) //salt rounds 
+
+    const update_user_query = {
+      text: 'UPDATE users SET password_hash = $1 WHERE email = $2',
+      values: [hashedPassword, email]
+    }
+    await postgres.query(update_user_query)
+
+    res.status(201).json({ message: `Password was reset` })
+  } catch (error) {
+    return res.status(403).json({ message: 'Unable reset password' })
+  }
+}
+
+
+module.exports = { getAllUsers, createUser, updateUser, deleteUser, verifyUser, forgotPassword, resetPassword }

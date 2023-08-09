@@ -8,9 +8,24 @@ export const usersApiSlice = apiSlice.injectEndpoints({
     verifyUser: builder.query({
       query: token => `/users/verify/${token}`
     }),
+
     createUser: builder.mutation({
       query: res => ({
         url: '/users/signup',
+        method: 'POST',
+        body: { ...res }
+      })
+    }),
+    forgotPassword: builder.mutation({
+      query: res => ({
+        url: '/users/forgotPassword',
+        method: 'POST',
+        body: { ...res }
+      })
+    }),
+    resetPassword: builder.mutation({
+      query: res => ({
+        url: '/users/resetPassword',
         method: 'POST',
         body: { ...res }
       })
@@ -23,6 +38,7 @@ export const {
   useGetUsersQuery,
   useVerifyUserQuery,
   useCreateUserMutation,
-
+  useForgotPasswordMutation,
+  useResetPasswordMutation
 } = usersApiSlice
 
