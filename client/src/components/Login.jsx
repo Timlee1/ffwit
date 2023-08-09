@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 
 import { useDispatch } from 'react-redux'
@@ -18,7 +18,9 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
+      //unwrap payload to get access token
       const { accessToken } = await login({ email, password }).unwrap()
+      //set credentials using access token
       dispatch(setCredentials({ accessToken }))
       setEmail('')
       setPassword('')
@@ -43,6 +45,7 @@ const Login = () => {
   //const errClass = errMsg ? "errmsg" : "offscreen"
 
   if (isLoading) return <p>Loading...</p>
+
   const content = (
     <section>
       <header>
@@ -79,10 +82,8 @@ const Login = () => {
           </label>
         </form>
         <p>{errMsg}</p>
-      </main>
-      <footer>
         <Link to="/">Back to Home</Link>
-      </footer>
+      </main>
     </section>
   )
 

@@ -1,13 +1,21 @@
 const express = require('express')
 const router = express.Router()
-const userController = require('../controllers/usersController')
+const userController = require('../controllers/userController')
 const verifyJWT = require('../middleware/verifyJWT')
 
-router.use(verifyJWT)
 
+//public routes
+router.route('/signup')
+  .post(userController.createUser)
+
+router.route('/verify/:token')
+  .get(userController.verifyUser)
+
+//router.use(verifyJWT)
+
+//private routes
 router.route('/')
   .get(userController.getAllUsers)
-  .post(userController.createUser)
   .patch(userController.updateUser)
   .delete(userController.deleteUser)
 

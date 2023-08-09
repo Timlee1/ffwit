@@ -1,10 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-const Navbar = () => {
+function Navbar({ auth }) {
   return (
     <>
-      <div>Navbar</div>
+      <p>{auth && 'auth'}</p>
+      <Link to="/signup">Signup</Link>
       <Link to="/login">Login</Link>
       <Link to="/logout">Logout</Link>
     </>

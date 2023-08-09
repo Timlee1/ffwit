@@ -1,10 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { setCredentials } from '../features/auth/authSlice'
-import usePersist from '../hooks/usePersist'
 
 const baseQuery = fetchBaseQuery({
   baseUrl: 'http://localhost:3500/api',
   credentials: 'include',
+  //add authorization headers for private api calls 
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.token
 
@@ -15,10 +15,10 @@ const baseQuery = fetchBaseQuery({
   }
 })
 
+//refresh access token if it had expired then retry query
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions)
 
-  // If you want, handle other status codes, too
   if (result?.error?.status === 403) {
     // send refresh token to get new access token 
     const refreshResult = await baseQuery('/auth/refresh', api, extraOptions)
