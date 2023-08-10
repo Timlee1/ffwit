@@ -4,7 +4,7 @@ import { useResetPasswordMutation } from './usersApiSlice'
 
 const ResetPassword = () => {
   const location = useLocation();
-  const token = location.search.split('=')[1]
+
   const [password, setPassword] = useState('')
   const [passwordVerify, setPasswordVerify] = useState('')
   const [msg, setMsg] = useState('')
@@ -20,14 +20,24 @@ const ResetPassword = () => {
         setPasswordVerify('')
       }
       else {
-        await reset({ password, token })
-        setMsg('Password was reset')
+        const token = location.search.split('=')[1]
+        const resp = await reset({ password, token })
+        if (resp?.error?.data?.message) {
+          setMsg(resp?.error?.data?.message);
+        }
+        else if (resp?.error) {
+          setMsg('Unable to reset password')
+        }
+        else {
+          setMsg('Password was reset')
+        }
       }
     } catch (err) {
+      console.log(err)
       if (err?.data?.message) {
         setMsg(err.data.message);
       } else {
-        setMsg('No server response');
+        setMsg('Unable to reset password');
       }
     }
   }

@@ -68,8 +68,8 @@ const createUser = async (req, res) => {
       const url = process.env.CLIENT + `/verify?token=${token}`
       await transporter.sendMail(
         {
-          from: "timothy.j.lee0@gmail.com", //CHANGE THIS TO EMAIL VAR IN PRODUCTION
-          to: "timothy.j.lee0@gmail.com",
+          from: process.env.EMAIL, //CHANGE THIS TO EMAIL VAR IN PRODUCTION
+          to: process.env.EMAIL,
           subject: "Message",
           html: `Please click this link to confirm your email: <a href="${url}">${url}</a>`
         },
@@ -86,47 +86,43 @@ const createUser = async (req, res) => {
 
 // Update a user 
 // @route PATCH /users
-const updateUser = asyncHandler(async (req, res) => {
-  const { id, email, password } = req.body
+const updatePassword = asyncHandler(async (req, res) => {
+  try {
+    const { email, currentPassword, newPassword } = req.body
+    const userEmail = req.email
 
-  if (!id || !email || !password) {
-    return res.status(400).json({ message: 'All fields are required' })
-  }
-
-  const find_user_query = {
-    text: "SELECT * FROM USERS WHERE id = $1",
-    values: [id]
-  }
-  const user = await postgres.query(find_user_query)
-  if (!user.rows.length) {
-    return res.status(409).json({ message: 'User not found' })
-  }
-
-  const find_email_query = {
-    text: "SELECT * FROM USERS WHERE email = $1",
-    values: [email]
-  }
-  const email_used = await postgres.query(find_email_query)
-  if (email_used.rows.length) {
-    return res.status(409).json({ message: 'Email already used' })
-  }
-
-  if (password) {
-    const update_password_query = {
-      text: "",
-      values: []
+    if (!email || !currentPassword || !newPassword) {
+      return res.status(400).json({ message: 'All fields are required' })
     }
-  }
 
-  if (email) {
-    const upadate_email_query = {
-      text: "",
-      values: []
+    if (email !== userEmail) {
+      return res.status(400).json({ message: 'Wrong email' })
     }
-  }
-  console.log("To be implemented")
-  res.status(201).json({ message: 'Placeholder for now' })
 
+    const find_user_query = {
+      text: "SELECT * FROM USERS WHERE email = $1",
+      values: [email]
+    }
+    const user = await postgres.query(find_user_query)
+    if (!user.rows.length) {
+      return res.status(409).json({ message: 'User not found' })
+    }
+    const user_password = user.rows[0].password_hash
+    const match = await bcrypt.compare(currentPassword, user_password)
+    if (!match) {
+      return res.status(401).json({ message: 'Unauthorized' })
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10) //salt rounds 
+    const update_user_query = {
+      text: 'UPDATE users SET password_hash = $1 WHERE email = $2',
+      values: [hashedPassword, email]
+    }
+    await postgres.query(update_user_query)
+    res.status(201).json({ message: `Password was reset` })
+  } catch (err) {
+    return res.status(403).json({ message: 'Unable reset password' })
+  }
 })
 
 // Delete a user 
@@ -187,8 +183,8 @@ const forgotPassword = async (req, res) => {
     const url = process.env.CLIENT + `/reset-password?token=${token}`
     await transporter.sendMail(
       {
-        from: "timothy.j.lee0@gmail.com", //CHANGE THIS TO EMAIL VAR IN PRODUCTION
-        to: "timothy.j.lee0@gmail.com",
+        from: process.env.EMAIL, //CHANGE THIS TO EMAIL VAR IN PRODUCTION
+        to: process.env.EMAIL,
         subject: "Message",
         html: `Please click this link to reset your password: <a href="${url}">${url}</a>`
       },
@@ -205,15 +201,14 @@ const forgotPassword = async (req, res) => {
 const resetPassword = async (req, res) => {
   try {
     const { token, password } = req.body
-    jwt.verify(
+    await jwt.verify(
       token,
       process.env.ACCESS_TOKEN_SECRET,
       (err, decoded) => {
-        if (err) return res.status(403).json({ message: 'Forbidden' })
         email = decoded.email
       }
     )
-    console.log(email)
+
     const hashedPassword = await bcrypt.hash(password, 10) //salt rounds 
 
     const update_user_query = {
@@ -221,12 +216,11 @@ const resetPassword = async (req, res) => {
       values: [hashedPassword, email]
     }
     await postgres.query(update_user_query)
-
-    res.status(201).json({ message: `Password was reset` })
+    return res.status(201).json({ message: `Password was reset` })
   } catch (error) {
     return res.status(403).json({ message: 'Unable reset password' })
   }
 }
 
 
-module.exports = { getAllUsers, createUser, updateUser, deleteUser, verifyUser, forgotPassword, resetPassword }
+module.exports = { getAllUsers, createUser, updatePassword, deleteUser, verifyUser, forgotPassword, resetPassword }

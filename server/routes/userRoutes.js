@@ -19,7 +19,7 @@ router.use(verifyJWT)
 //private routes
 router.route('/')
   .get(userController.getAllUsers)
-  .patch(userController.updateUser)
+  .patch(userController.updatePassword)
   .delete(userController.deleteUser)
 
 module.exports = router
