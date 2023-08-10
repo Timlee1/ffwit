@@ -72,9 +72,14 @@ const Login = () => {
             />
             Trust This Device
           </label>
+          {msg && <p>{msg}</p>}
+          <div>
+            <Link to="/forgot-password">Forgot Password?</Link>
+          </div>
         </form>
-        {msg && <p>{msg}</p>}
-        <Link to="/forgot-password">Forgot Password</Link>
+        <div>
+          Don't have an account? <Link to="/signup">Sign Up</Link>
+        </div>
       </main>
     </section>
   )

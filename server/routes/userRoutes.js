@@ -20,6 +20,5 @@ router.use(verifyJWT)
 router.route('/')
   .get(userController.getAllUsers)
   .patch(userController.updatePassword)
-  .delete(userController.deleteUser)
 
 module.exports = router

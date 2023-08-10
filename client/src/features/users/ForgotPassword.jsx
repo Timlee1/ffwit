@@ -38,8 +38,8 @@ const ForgotPassword = () => {
             required
           />
           <button>Send Reset Password Email</button>
+          {msg && <p>{msg}</p>}
         </form>
-        {msg && <p>{msg}</p>}
       </main>
     </section>
   )

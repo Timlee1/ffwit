@@ -96,7 +96,7 @@ const updatePassword = asyncHandler(async (req, res) => {
     }
 
     if (email !== userEmail) {
-      return res.status(400).json({ message: 'Wrong email' })
+      return res.status(400).json({ message: 'Email is incorrect' })
     }
 
     const find_user_query = {
@@ -110,7 +110,7 @@ const updatePassword = asyncHandler(async (req, res) => {
     const user_password = user.rows[0].password_hash
     const match = await bcrypt.compare(currentPassword, user_password)
     if (!match) {
-      return res.status(401).json({ message: 'Unauthorized' })
+      return res.status(401).json({ message: 'Current password is incorrect' })
     }
 
     const hashedPassword = await bcrypt.hash(newPassword, 10) //salt rounds 
@@ -125,14 +125,6 @@ const updatePassword = asyncHandler(async (req, res) => {
   }
 })
 
-// Delete a user 
-// @route DELETE /users
-const deleteUser = asyncHandler(async (req, res) => {
-  console.log("To be implemented")
-  res.status(201).json({ message: 'Placeholder for now' })
-})
-
-
 const verifyUser = async (req, res) => {
   try {
     const { token } = req.params
@@ -140,7 +132,6 @@ const verifyUser = async (req, res) => {
       token,
       process.env.ACCESS_TOKEN_SECRET,
       (err, decoded) => {
-        if (err) return res.status(403).json({ message: 'Forbidden' })
         email = decoded.email
       }
     )
@@ -222,5 +213,4 @@ const resetPassword = async (req, res) => {
   }
 }
 
-
-module.exports = { getAllUsers, createUser, updatePassword, deleteUser, verifyUser, forgotPassword, resetPassword }
+module.exports = { getAllUsers, createUser, updatePassword, verifyUser, forgotPassword, resetPassword }

@@ -1,13 +1,15 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Logout from '../features/users/Logout'
 
 function Navbar({ auth }) {
   return (
     <>
       {!auth && <Link to="/signup">Signup</Link>}
       {!auth && <Link to="/login">Login</Link>}
-      {auth && <Link to="/logout">Logout</Link>}
-      {auth && <Link to="/update-password">Update Password</Link>}
+      {auth && <Logout />}
+      {auth && <Link to="/profile">Profile</Link>}
+
     </>
   )
 }

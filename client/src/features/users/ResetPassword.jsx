@@ -6,7 +6,7 @@ const ResetPassword = () => {
   const location = useLocation();
 
   const [password, setPassword] = useState('')
-  const [passwordVerify, setPasswordVerify] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [msg, setMsg] = useState('')
   const [reset] = useResetPasswordMutation()
 
@@ -14,14 +14,15 @@ const ResetPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      if (password !== passwordVerify) {
+      if (password !== confirmPassword) {
         setMsg('Password are not the same');
         setPassword('')
-        setPasswordVerify('')
+        setConfirmPassword('')
       }
       else {
         const token = location.search.split('=')[1]
-        const resp = await reset({ password, token })
+        //resp undefined if it status 201? else it is an error
+        const { resp } = await reset({ password, token }).unwrap()
         if (resp?.error?.data?.message) {
           setMsg(resp?.error?.data?.message);
         }
@@ -43,7 +44,7 @@ const ResetPassword = () => {
   }
 
   const handlePasswordInput = (e) => setPassword(e.target.value)
-  const handlePasswordVerifyInput = (e) => setPasswordVerify(e.target.value)
+  const handleConfirmPasswordInput = (e) => setConfirmPassword(e.target.value)
 
 
   return (
@@ -61,17 +62,17 @@ const ResetPassword = () => {
             onChange={handlePasswordInput}
             required
           />
-          <label htmlFor="passwordVerify">Repeat New Password:</label>
+          <label htmlFor="confirmPassword">Confirm Password:</label>
           <input
             type="password"
-            id="passwordVerify"
-            value={passwordVerify}
-            onChange={handlePasswordVerifyInput}
+            id="confirmPassword"
+            value={confirmPassword}
+            onChange={handleConfirmPasswordInput}
             required
           />
           <button>Reset Password</button>
+          {msg && <p>{msg}</p>}
         </form>
-        {msg && <p>{msg}</p>}
       </main>
     </section>
   )

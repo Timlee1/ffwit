@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useCreateUserMutation } from '../features/users/usersApiSlice'
+import { Link } from 'react-router-dom'
 
 const SignUp = () => {
   const [email, setEmail] = useState('')
@@ -49,8 +50,12 @@ const SignUp = () => {
             required
           />
           <button>Sign Up</button>
+          {msg && <p>{msg}</p>}
         </form>
-        {msg && <p>{msg}</p>}
+        <div>
+          Already have an account? <Link to="/login">Log in</Link>
+        </div>
+
       </main>
     </section>
   )

@@ -52,50 +52,45 @@ const UpdatePassword = () => {
   const handleNewPasswordInput = (e) => setNewPassword(e.target.value)
   const handleConfirmPasswordInput = (e) => setConfirmPassword(e.target.value)
 
-
   return (
     <section>
-      <header>
-        <h1>Update Password</h1>
-      </header>
-      <main>
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="text"
-            id="email"
-            value={email}
-            onChange={handleEmailInput}
-            required
-          />
-          <label htmlFor="currentPassword">Current Password:</label>
-          <input
-            type="password"
-            id="currentPassword"
-            value={currentPassword}
-            onChange={handleCurrentPasswordInput}
-            required
-          />
-          <label htmlFor="newPassword">New Password:</label>
-          <input
-            type="password"
-            id="newPassword"
-            value={newPassword}
-            onChange={handleNewPasswordInput}
-            required
-          />
-          <label htmlFor="confirmPassword">Confirm Password:</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            value={confirmPassword}
-            onChange={handleConfirmPasswordInput}
-            required
-          />
-          <button>Update</button>
-        </form>
+      <h1>Update Password</h1>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="email">Email:</label>
+        <input
+          type="text"
+          id="email"
+          value={email}
+          onChange={handleEmailInput}
+          required
+        />
+        <label htmlFor="currentPassword">Current Password:</label>
+        <input
+          type="password"
+          id="currentPassword"
+          value={currentPassword}
+          onChange={handleCurrentPasswordInput}
+          required
+        />
+        <label htmlFor="newPassword">New Password:</label>
+        <input
+          type="password"
+          id="newPassword"
+          value={newPassword}
+          onChange={handleNewPasswordInput}
+          required
+        />
+        <label htmlFor="confirmPassword">Confirm Password:</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          value={confirmPassword}
+          onChange={handleConfirmPasswordInput}
+          required
+        />
+        <button>Update</button>
         {msg && <p>{msg}</p>}
-      </main>
+      </form>
     </section>
   )
 }

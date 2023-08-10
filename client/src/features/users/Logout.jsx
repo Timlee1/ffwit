@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useSendLogoutMutation } from '../features/auth/authApiSlice'
+import { useSendLogoutMutation } from '../auth/authApiSlice'
 
 const Logout = () => {
   const [msg, setMsg] = useState('')

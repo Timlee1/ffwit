@@ -11,15 +11,22 @@ const VerifyEmail = () => {
     error
   } = useVerifyUserQuery(token)
 
+  let content = undefined
   if (isSuccess) {
-    return <p>Account Verified!</p>
+    content = <p>Account Verified!</p>
   }
+  //never gets to this condition always goes to PageNotFound
   if (isError || error) {
-    return <p>Account failed to be verified</p>
+    console.log("here")
+    content = <p>Account failed to be verified</p>
   }
+  if (isLoading) {
+    content = <p>Loading</p>
+  }
+
   return (
     <>
-      <div></div>
+      {content}
     </>
   )
 }
