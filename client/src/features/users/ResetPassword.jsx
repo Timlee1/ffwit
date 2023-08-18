@@ -48,33 +48,29 @@ const ResetPassword = () => {
 
 
   return (
-    <section>
-      <header>
-        <h1>Reset Password</h1>
-      </header>
-      <main>
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="password">New Password:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={handlePasswordInput}
-            required
-          />
-          <label htmlFor="confirmPassword">Confirm Password:</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            value={confirmPassword}
-            onChange={handleConfirmPasswordInput}
-            required
-          />
-          <button>Reset Password</button>
-          {msg && <p>{msg}</p>}
-        </form>
-      </main>
-    </section>
+    <main>
+      <h1>Reset Password</h1>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="password">New Password:</label>
+        <input
+          type="password"
+          id="password"
+          value={password}
+          onChange={handlePasswordInput}
+          required
+        />
+        <label htmlFor="confirmPassword">Confirm Password:</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          value={confirmPassword}
+          onChange={handleConfirmPasswordInput}
+          required
+        />
+        <button>Reset Password</button>
+        {msg && <p>{msg}</p>}
+      </form>
+    </main>
   )
 }
 

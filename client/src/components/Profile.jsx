@@ -4,10 +4,10 @@ import UpdatePassword from '../features/users/UpdatePassword'
 
 const Profile = () => {
   return (
-    <>
+    <main>
       <UpdatePassword />
       <Logout />
-    </>
+    </main>
   )
 }
 

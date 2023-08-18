@@ -23,25 +23,21 @@ const ForgotPassword = () => {
   const handleEmailInput = (e) => setEmail(e.target.value)
 
   return (
-    <section>
-      <header>
-        <h1>Forgot Password</h1>
-      </header>
-      <main>
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="text"
-            id="email"
-            value={email}
-            onChange={handleEmailInput}
-            required
-          />
-          <button>Send Reset Password Email</button>
-          {msg && <p>{msg}</p>}
-        </form>
-      </main>
-    </section>
+    <main>
+      <h1>Forgot Password</h1>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="email">Email:</label>
+        <input
+          type="text"
+          id="email"
+          value={email}
+          onChange={handleEmailInput}
+          required
+        />
+        <button>Send Reset Password Email</button>
+        {msg && <p>{msg}</p>}
+      </form>
+    </main>
   )
 }
 

@@ -53,7 +53,7 @@ const UpdatePassword = () => {
   const handleConfirmPasswordInput = (e) => setConfirmPassword(e.target.value)
 
   return (
-    <section>
+    <main>
       <h1>Update Password</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="email">Email:</label>
@@ -91,7 +91,7 @@ const UpdatePassword = () => {
         <button>Update</button>
         {msg && <p>{msg}</p>}
       </form>
-    </section>
+    </main>
   )
 }
 

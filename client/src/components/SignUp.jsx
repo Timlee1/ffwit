@@ -27,37 +27,32 @@ const SignUp = () => {
   }
 
   return (
-    <section>
-      <header>
-        <h1>Sign Up</h1>
-      </header>
-      <main>
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="text"
-            id="email"
-            value={email}
-            onChange={handleEmailInput}
-            required
-          />
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={handlePasswordInput}
-            required
-          />
-          <button>Sign Up</button>
-          {msg && <p>{msg}</p>}
-        </form>
-        <div>
-          Already have an account? <Link to="/login">Log in</Link>
-        </div>
-
-      </main>
-    </section>
+    <main>
+      <h1>Sign Up</h1>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="email">Email:</label>
+        <input
+          type="text"
+          id="email"
+          value={email}
+          onChange={handleEmailInput}
+          required
+        />
+        <label htmlFor="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          value={password}
+          onChange={handlePasswordInput}
+          required
+        />
+        <button>Sign Up</button>
+        {msg && <p>{msg}</p>}
+      </form>
+      <div>
+        Already have an account? <Link to="/login">Log in</Link>
+      </div>
+    </main>
   )
 }
 

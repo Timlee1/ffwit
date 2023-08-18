@@ -40,48 +40,44 @@ const Login = () => {
   const handleToggle = () => setPersist(prev => !prev)
 
   return (
-    <section>
-      <header>
-        <h1>Login</h1>
-      </header>
-      <main>
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="email">Email:</label>
+    <main>
+      <h1>Login</h1>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="email">Email:</label>
+        <input
+          type="text"
+          id="email"
+          value={email}
+          onChange={handleUserInput}
+          required
+        />
+        <label htmlFor="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          value={password}
+          onChange={handlePasswordInput}
+          required
+        />
+        <button>Sign In</button>
+        <label htmlFor="persist">
           <input
-            type="text"
-            id="email"
-            value={email}
-            onChange={handleUserInput}
-            required
+            type="checkbox"
+            id="persist"
+            onChange={handleToggle}
+            checked={persist}
           />
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={handlePasswordInput}
-            required
-          />
-          <button>Sign In</button>
-          <label htmlFor="persist">
-            <input
-              type="checkbox"
-              id="persist"
-              onChange={handleToggle}
-              checked={persist}
-            />
-            Trust This Device
-          </label>
-          {msg && <p>{msg}</p>}
-          <div>
-            <Link to="/forgot-password">Forgot Password?</Link>
-          </div>
-        </form>
+          Trust This Device
+        </label>
+        {msg && <p>{msg}</p>}
         <div>
-          Don't have an account? <Link to="/signup">Sign Up</Link>
+          <Link to="/forgot-password">Forgot Password?</Link>
         </div>
-      </main>
-    </section>
+      </form>
+      <div>
+        Don't have an account? <Link to="/signup">Sign Up</Link>
+      </div>
+    </main>
   )
 }
 

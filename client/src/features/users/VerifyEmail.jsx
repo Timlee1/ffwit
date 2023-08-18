@@ -25,9 +25,9 @@ const VerifyEmail = () => {
   }
 
   return (
-    <>
+    <main>
       {content}
-    </>
+    </main>
   )
 }
 

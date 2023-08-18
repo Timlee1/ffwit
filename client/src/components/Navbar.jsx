@@ -4,13 +4,15 @@ import Logout from '../features/users/Logout'
 
 function Navbar({ auth }) {
   return (
-    <>
-      {!auth && <Link to="/signup">Signup</Link>}
-      {!auth && <Link to="/login">Login</Link>}
-      {auth && <Logout />}
-      {auth && <Link to="/profile">Profile</Link>}
-
-    </>
+    <nav>
+      <ul>
+        {!auth && <li><Link to="/signup">Signup</Link></li>}
+        {!auth && <li><Link to="/login">Login</Link></li>}
+        {auth && <li><Logout /></li>}
+        {auth && <li><Link to="/profile">Profile</Link></li>}
+        {auth && <li><Link to="/payment">Payment</Link></li>}
+      </ul>
+    </nav>
   )
 }
 

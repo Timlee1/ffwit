@@ -5,8 +5,9 @@ import Login from "./components/Login"
 import SignUp from "./components/SignUp"
 import Navbar from "./components/Navbar"
 import Profile from "./components/Profile"
-import Logout from "./features/users/Logout"
 import PageNotFound from "./components/PageNotFound"
+import Payment from "./components/Payment"
+import Logout from "./features/users/Logout"
 import VerifyEmail from "./features/users/VerifyEmail"
 import ForgotPassword from "./features/users/ForgotPassword"
 import ResetPassword from "./features/users/ResetPassword"
@@ -29,6 +30,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           {auth && <Route path="/profile" element={<Profile />} />}
+          {auth && <Route path="/payment" element={<Payment />} />}
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>

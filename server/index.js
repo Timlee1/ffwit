@@ -7,9 +7,13 @@ const errorHandler = require('./middleware/errorHandler')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const corsOptions = require('./config/corsOptions')
+const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
+
 const PORT = process.env.PORT || 3500
 
 app.use(logger)
+
+app.use('/api/webhook', express.raw({ type: 'application/json' }), require('./routes/webhookRoutes'))
 
 app.use(cors(corsOptions))
 
@@ -24,6 +28,8 @@ app.use('/', require('./routes/root'))
 app.use('/api/auth', require('./routes/authRoutes'))
 
 app.use('/api/users', require('./routes/userRoutes'))
+
+app.use('/api/payment', require('./routes/paymentRoutes'))
 
 app.all('*', (req, res) => {
   res.status(404)

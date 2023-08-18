@@ -8,7 +8,6 @@ export const usersApiSlice = apiSlice.injectEndpoints({
     verifyUser: builder.query({
       query: token => `/users/verify/${token}`
     }),
-
     createUser: builder.mutation({
       query: res => ({
         url: '/users/signup',
@@ -37,7 +36,6 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         body: { ...res }
       })
     }),
-
   })
 });
 
