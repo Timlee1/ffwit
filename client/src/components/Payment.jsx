@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useCreateCheckoutSessionMutation } from '../features/payment/paymentApiSlice'
 
 const Payment = () => {
+  const [msg, setMsg] = useState('')
   const [createCheckoutSession] = useCreateCheckoutSessionMutation()
 
   const checkout = (priceId) => async (e) => {
