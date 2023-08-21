@@ -1,92 +1,96 @@
-import Select from 'react-select';
 import TeamPoints from '../features/settings/TeamPoints'
 import OpponentPoints from '../features/settings/OpponentPoints'
 import ScoringSettings from '../features/settings/ScoringSettings'
-
-
+import AddablePlayerTable from '../features/players/AddablePlayerTable';
+import { addPlayer, removePlayer, addOpponentPlayer, removeOpponentPlayer, selectUserPlayers, selectOpponentPlayers } from '../features/players/playersSlice'
+import { useGetPlayersQuery } from '../features/players/playersApiSlice'
+import { useState } from 'react'
+import { useSelector } from "react-redux/es/hooks/useSelector"
+import { useDispatch } from 'react-redux'
 
 const Simulation = () => {
+  const [userPlayers, setUserPlayers] = useState(useSelector(selectUserPlayers))
+  const [opponentPlayers, setOpponentPlayers] = useState(useSelector(selectOpponentPlayers))
+  const dispatch = useDispatch()
+  const {
+    data: options,
+    isLoading,
+    isSuccess,
+    isError,
+    error
+  } = useGetPlayersQuery()
+
+  function handleAddPlayer(player) {
+    if (userPlayers.every(p => p.id != player.id)) {
+      setUserPlayers(
+        [
+          ...userPlayers,
+          { id: player.id, name: player.name, position: player.position, team: player.team }
+        ]
+      )
+      dispatch(addPlayer({ player }))
+    }
+  }
+
+  function handleDeletePlayer(player) {
+    setUserPlayers(
+      userPlayers.filter(p => p.id !== player.id)
+    )
+    dispatch(removePlayer({ player }))
+  }
+
+  function handleAddOpponentPlayer(player) {
+    if (opponentPlayers.every(p => p.id != player.id)) {
+      setOpponentPlayers(
+        [
+          ...opponentPlayers,
+          { id: player.id, name: player.name, position: player.position, team: player.team }
+        ]
+      )
+      dispatch(addOpponentPlayer({ player }))
+    }
+  }
+
+  function handleDeleteOpponentPlayer(player) {
+    setOpponentPlayers(
+      opponentPlayers.filter(p => p.id !== player.id)
+    )
+    dispatch(removeOpponentPlayer({ player }))
+  }
+
+  let content
+  if (isLoading) {
+    content = <h2>Loading...</h2>
+  } else if (isSuccess) {
+    content = <>
+      <TeamPoints />
+      <AddablePlayerTable
+        team={'User'}
+        players={userPlayers}
+        options={options}
+        handleAddPlayer={handleAddPlayer}
+        handleDeletePlayer={handleDeletePlayer}
+      />
+      <OpponentPoints />
+      <AddablePlayerTable
+        team={'Opponent'}
+        players={opponentPlayers}
+        options={options}
+        handleAddPlayer={handleAddOpponentPlayer}
+        handleDeletePlayer={handleDeleteOpponentPlayer}
+      />
+    </>
+  } else if (isError || error) {
+    content = <div>Error</div>
+  }
+
   return (
     <>
-      <TeamPoints />
-      <OpponentPoints />
       <ScoringSettings />
+      {content}
     </>
 
   )
 }
 
 export default Simulation
-
-// const SCORING = [
-//   { value: "Standard", label: "Standard" },
-//   { value: "Half PPR", label: "Half PPR" },
-//   { value: "PPR", label: "PPR" },
-// ];
-
-// const OPTIONS = [
-//   { value: "Daniel Jones", label: "Daniel Jones" },
-//   { value: "Saquon Barkley", label: "Saquon Barkley" },
-//   { value: "Darren Waller", label: "Darren Waller" },
-//   { value: "Jalin Hyatt", label: "Jalin Hyatt" },
-//   { value: "Isiah Hodgins", label: "Isiah Hodgins" },
-// ];
-
-// function ScoringDropdown({ options }) {
-//   //const [selectedOption, setSelectedOption] = useState();
-//   return (
-//     <>
-//       Scoring:
-//       < Select
-//         //defaultValue={selectedOption}
-//         //onChange={setSelectedOption}
-//         options={options}
-//       />
-//     </>
-//   )
-// }
-
-// function PointsAlreadyScoredInput() {
-//   return (
-//     <>
-//       <form>
-//         <label htmlFor="pts">Points Already Scored:</label>
-//         <input type="text" id="pts" name="pts" minLength="1" maxLength="5" />
-//       </form>
-//     </>
-//   )
-// }
-
-// function SearchPlayerDropdown({ options }) {
-//   //const [selectedOption, setSelectedOption] = useState();
-//   return (
-//     <Select
-//       //defaultValue={selectedOption}
-//       //onChange={setSelectedOption}
-//       options={options}
-//     />
-//   )
-// }
-
-// function AddPlayerButton() {
-//   return (
-//     <button type="submit">Add Player</button>
-//   )
-// }
-
-// function AddPlayer() {
-//   return (
-//     <>
-//       <SearchPlayerDropdown options={OPTIONS} />
-//       <AddPlayerButton />
-//     </>
-//   )
-// }
-
-// function PlayerRow({ player }) {
-//   return (
-//     <tr>
-//       <td>{player.name}</td>
-//     </tr>
-//   )
-// }

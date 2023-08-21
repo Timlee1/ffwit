@@ -8,6 +8,8 @@ const getPlayers = async (req, res) => {
       var player = new Object();
       player.id = playerInformation['id'];
       player.name = playerInformation['Name'];
+      player.position = playerInformation['Pos'];
+      player.team = playerInformation['Team'];
       players.push(player)
     }
     return res.status(201).json({ players: players })
