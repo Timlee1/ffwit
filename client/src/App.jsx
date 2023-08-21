@@ -7,12 +7,13 @@ import Navbar from "./components/Navbar"
 import Profile from "./components/Profile"
 import PageNotFound from "./components/PageNotFound"
 import Payment from "./components/Payment"
+import Simulation from "./components/Simulation"
 import Logout from "./features/users/Logout"
 import VerifyEmail from "./features/users/VerifyEmail"
 import ForgotPassword from "./features/users/ForgotPassword"
 import ResetPassword from "./features/users/ResetPassword"
 import { selectCurrentToken } from './features/auth/authSlice'
-import { useSelector } from "react-redux/es/hooks/useSelector";
+import { useSelector } from "react-redux/es/hooks/useSelector"
 
 function App() {
   const auth = useSelector(selectCurrentToken)
@@ -31,6 +32,7 @@ function App() {
           <Route path="/reset-password" element={<ResetPassword />} />
           {auth && <Route path="/profile" element={<Profile />} />}
           {auth && <Route path="/payment" element={<Payment />} />}
+          {auth && <Route path="/simulation" element={<Simulation />} />}
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>

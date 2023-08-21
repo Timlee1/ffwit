@@ -22,8 +22,16 @@ const authSlice = createSlice({
     logOut: state => {
       state.token = null
       localStorage.removeItem('token')
-      localStorage.removeItem('persist')
       sessionStorage.removeItem('token')
+      localStorage.removeItem('persist')
+      localStorage.removeItem('scoring')
+      sessionStorage.removeItem('scoring')
+      localStorage.removeItem('teamPoints')
+      sessionStorage.removeItem('teamPoints')
+      localStorage.removeItem('opponentPoints')
+      sessionStorage.removeItem('opponentPoints')
+      localStorage.removeItem('scoring')
+      sessionStorage.removeItem('scoring')
     },
   }
 })

@@ -20,6 +20,7 @@ const Login = () => {
     try {
       //unwrap payload to get access token
       const { accessToken } = await login({ email, password }).unwrap()
+      //console.log(accessToken)
       //set credentials using access token
       dispatch(setCredentials({ accessToken }))
       setMsg('Logged in')

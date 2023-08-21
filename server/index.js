@@ -31,6 +31,8 @@ app.use('/api/users', require('./routes/userRoutes'))
 
 app.use('/api/payment', require('./routes/paymentRoutes'))
 
+app.use('/api/players', require('./routes/playerRoutes'))
+
 app.all('*', (req, res) => {
   res.status(404)
   if (req.accepts('html')) {

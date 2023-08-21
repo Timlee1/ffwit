@@ -11,6 +11,7 @@ function Navbar({ auth }) {
         {auth && <li><Logout /></li>}
         {auth && <li><Link to="/profile">Profile</Link></li>}
         {auth && <li><Link to="/payment">Payment</Link></li>}
+        {auth && <li><Link to="/simulation">Simulation</Link></li>}
       </ul>
     </nav>
   )
