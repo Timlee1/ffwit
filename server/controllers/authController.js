@@ -10,7 +10,7 @@ const REFRESH_TOKEN_EXPIRATION = '7d' //change maxage if change this
 // @route POST /auth
 // @access Public
 const login = asyncHandler(async (req, res) => {
-  const { email, password } = req.body
+  const { email, password, persist } = req.body
 
   if (!email || !password) {
     return res.status(400).json({ message: 'All fields are required' })
@@ -63,11 +63,13 @@ const login = asyncHandler(async (req, res) => {
   )
 
   // Create secure cookie with refresh token 
+  const maxAge = persist ? 1 * 24 * 60 * 60 * 1000 : 0
+  console.log(maxAge)
   res.cookie('jwt', refreshToken, {
     httpOnly: true, //accessible only by web server 
     secure: true, //https
     sameSite: 'None', //cross-site cookie 
-    maxAge: 1 * 24 * 60 * 60 * 1000 //cookie expiry: set to match refresh token
+    maxAge: maxAge//cookie expiry: set to match refresh token
   })
 
   // Send accessToken containing id and email 
