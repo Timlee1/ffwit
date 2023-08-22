@@ -1,16 +1,23 @@
-import TeamPoints from '../features/settings/TeamPoints'
-import OpponentPoints from '../features/settings/OpponentPoints'
-import ScoringSettings from '../features/settings/ScoringSettings'
-import AddablePlayerTable from '../features/players/AddablePlayerTable';
-import { addPlayer, removePlayer, addOpponentPlayer, removeOpponentPlayer, selectUserPlayers, selectOpponentPlayers } from '../features/players/playersSlice'
-import { useGetPlayersQuery } from '../features/players/playersApiSlice'
 import { useState } from 'react'
 import { useSelector } from "react-redux/es/hooks/useSelector"
 import { useDispatch } from 'react-redux'
+import Points from '../features/settings/Points'
+import ScoringSettings from '../features/settings/ScoringSettings'
+import AddablePlayerTable from '../features/players/AddablePlayerTable'
+import Simulate from '../features/players/Simulate'
+import { addPlayer, removePlayer, addOpponentPlayer, removeOpponentPlayer, selectUserPlayers, selectOpponentPlayers } from '../features/players/playersSlice'
+import { useGetPlayersQuery } from '../features/players/playersApiSlice'
+import { changeTeamPoints, selectTeamPoints, changeOpponentPoints, selectOpponentPoints } from '../features/settings/settingsSlice'
+import { changeScoring, selectScoring } from '../features/settings/settingsSlice'
 
 const Simulation = () => {
   const [userPlayers, setUserPlayers] = useState(useSelector(selectUserPlayers))
   const [opponentPlayers, setOpponentPlayers] = useState(useSelector(selectOpponentPlayers))
+  const [userMsg, setUserMsg] = useState()
+  const [opponentMsg, setOpponentMsg] = useState()
+  const [teamPoints, setTeamPoints] = useState(useSelector(selectTeamPoints))
+  const [opponentPoints, setOponentPoints] = useState(useSelector(selectOpponentPoints))
+  const [scoring, setScoring] = useState(useSelector(selectScoring))
   const dispatch = useDispatch()
   const {
     data: options,
@@ -21,7 +28,7 @@ const Simulation = () => {
   } = useGetPlayersQuery()
 
   function handleAddPlayer(player) {
-    if (userPlayers.every(p => p.id != player.id)) {
+    if (userPlayers.every(p => p.id != player.id) && opponentPlayers.every(p => p.id != player.id)) {
       setUserPlayers(
         [
           ...userPlayers,
@@ -29,6 +36,10 @@ const Simulation = () => {
         ]
       )
       dispatch(addPlayer({ player }))
+      setUserMsg('')
+      setOpponentMsg('')
+    } else {
+      setUserMsg('Player already on a team')
     }
   }
 
@@ -40,7 +51,7 @@ const Simulation = () => {
   }
 
   function handleAddOpponentPlayer(player) {
-    if (opponentPlayers.every(p => p.id != player.id)) {
+    if (userPlayers.every(p => p.id != player.id) && opponentPlayers.every(p => p.id != player.id)) {
       setOpponentPlayers(
         [
           ...opponentPlayers,
@@ -48,6 +59,10 @@ const Simulation = () => {
         ]
       )
       dispatch(addOpponentPlayer({ player }))
+      setUserMsg('')
+      setOpponentMsg('')
+    } else {
+      setOpponentMsg('Player already on a team')
     }
   }
 
@@ -58,26 +73,65 @@ const Simulation = () => {
     dispatch(removeOpponentPlayer({ player }))
   }
 
+  function handleTeamPointsInput(e) {
+    const points = e.target.value
+    dispatch(changeTeamPoints({ points }))
+    setTeamPoints(points)
+  }
+
+  function handleOpponentPointsInput(e) {
+    const points = e.target.value
+    dispatch(changeOpponentPoints({ points }))
+    setOponentPoints(points)
+  }
+
+  function handleScoringInput(e) {
+    const scoring = e.value
+    dispatch(changeScoring({ scoring }))
+    setScoring(e)
+  }
+
   let content
   if (isLoading) {
     content = <h2>Loading...</h2>
   } else if (isSuccess) {
     content = <>
-      <TeamPoints />
+      <ScoringSettings
+        scoring={scoring}
+        handleScoringInput={handleScoringInput}
+      />
+      <Points
+        team={'User'}
+        points={teamPoints}
+        handlePointsInput={handleTeamPointsInput}
+      />
       <AddablePlayerTable
         team={'User'}
         players={userPlayers}
         options={options}
         handleAddPlayer={handleAddPlayer}
         handleDeletePlayer={handleDeletePlayer}
+        message={userMsg}
       />
-      <OpponentPoints />
+      <Points
+        team={'Opponent'}
+        points={opponentPoints}
+        handlePointsInput={handleOpponentPointsInput}
+      />
       <AddablePlayerTable
         team={'Opponent'}
         players={opponentPlayers}
         options={options}
         handleAddPlayer={handleAddOpponentPlayer}
         handleDeletePlayer={handleDeleteOpponentPlayer}
+        message={opponentMsg}
+      />
+      <Simulate
+        scoring={scoring}
+        teamPoints={teamPoints}
+        opponentPoints={opponentPoints}
+        userPlayers={userPlayers}
+        opponentPlayers={opponentPlayers}
       />
     </>
   } else if (isError || error) {
@@ -86,7 +140,6 @@ const Simulation = () => {
 
   return (
     <>
-      <ScoringSettings />
       {content}
     </>
 

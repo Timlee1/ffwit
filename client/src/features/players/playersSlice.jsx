@@ -48,9 +48,9 @@ const playersSlice = createSlice({
       let team
       team = JSON.parse(localStorage.getItem("team") || "[]")
       if (!team.length) {
-        team = JSON.parse(localStorage.getItem("team") || "[]")
+        team = JSON.parse(sessionStorage.getItem("team") || "[]")
       }
-      team = team.filter(p => p.id !== player.id)
+      team = team.filter(p => p.id != player.id)
       if (localStorage.getItem("persist") === "true") {
         localStorage.setItem('team', JSON.stringify(team));
         sessionStorage.removeItem('team')
@@ -80,9 +80,9 @@ const playersSlice = createSlice({
       let team
       team = JSON.parse(localStorage.getItem("opponentTeam") || "[]")
       if (!team.length) {
-        team = JSON.parse(localStorage.getItem("opponentTeam") || "[]")
+        team = JSON.parse(sessionStorage.getItem("opponentTeam") || "[]")
       }
-      team = team.filter(p => p.id !== player.id)
+      team = team.filter(p => p.id != player.id)
       if (localStorage.getItem("persist") === "true") {
         localStorage.setItem('opponentTeam', JSON.stringify(team));
         sessionStorage.removeItem('opponentTeam')

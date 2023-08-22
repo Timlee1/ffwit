@@ -1,7 +1,7 @@
 import Select from 'react-select';
 import { useState } from 'react';
 
-const AddPlayer = ({ options, onAddPlayer }) => {
+const AddPlayer = ({ options, onAddPlayer, message }) => {
   const [selectPlayer, setSelectPlayer] = useState()
 
   const handleSelectPlayer = async (player) => {
@@ -17,6 +17,7 @@ const AddPlayer = ({ options, onAddPlayer }) => {
         onChange={handleSelectPlayer}
       />
       <button onClick={() => onAddPlayer(selectPlayer)}>Add Player</button>
+      <>{message}</>
     </>
   )
 }

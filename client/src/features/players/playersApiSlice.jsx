@@ -5,9 +5,17 @@ export const playersApiSlice = apiSlice.injectEndpoints({
     getPlayers: builder.query({
       query: () => '/players'
     }),
+    createSimulation: builder.mutation({
+      query: res => ({
+        url: '/players/simulation',
+        method: 'POST',
+        body: { ...res }
+      }),
+    }),
   })
 });
 
 export const {
   useGetPlayersQuery,
+  useCreateSimulationMutation
 } = playersApiSlice

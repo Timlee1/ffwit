@@ -18,4 +18,13 @@ const getPlayers = async (req, res) => {
   }
 }
 
-module.exports = { getPlayers }
+const simulation = async (req, res) => {
+  try {
+    console.log(req.body)
+    return res.status(201).json({ players: "test" })
+  } catch (err) {
+    return res.status(400).json({ message: 'Unable to simulate model' })
+  }
+}
+
+module.exports = { getPlayers, simulation }
