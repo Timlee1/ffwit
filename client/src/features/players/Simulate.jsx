@@ -1,5 +1,5 @@
 import { useCreateSimulationMutation } from './playersApiSlice'
-
+import { useState } from 'react'
 
 const Simulate = ({ scoring, teamPoints, opponentPoints, userPlayers, opponentPlayers }) => {
   const [simulate, {
@@ -8,6 +8,7 @@ const Simulate = ({ scoring, teamPoints, opponentPoints, userPlayers, opponentPl
     isError,
     error
   }] = useCreateSimulationMutation()
+  const [msg, setMsg] = useState('')
   const handleSimulate = async (e) => {
     e.preventDefault()
     try {

@@ -64,7 +64,6 @@ const login = asyncHandler(async (req, res) => {
 
   // Create secure cookie with refresh token 
   const maxAge = persist ? 1 * 24 * 60 * 60 * 1000 : 0
-  console.log(maxAge)
   res.cookie('jwt', refreshToken, {
     httpOnly: true, //accessible only by web server 
     secure: true, //https
