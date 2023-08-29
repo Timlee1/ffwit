@@ -18,7 +18,7 @@ router.use(verifyJWT)
 
 //private routes
 router.route('/')
-  .get(userController.getAllUsers)
+  .get(userController.getUserRefresh)
   .patch(userController.updatePassword)
 
 module.exports = router

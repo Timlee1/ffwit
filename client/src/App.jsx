@@ -14,11 +14,11 @@ import ForgotPassword from "./features/users/ForgotPassword"
 import ResetPassword from "./features/users/ResetPassword"
 import { selectCurrentToken } from './features/auth/authSlice'
 import { useSelector } from "react-redux/es/hooks/useSelector"
-import { useGetUsersQuery } from './features/users/usersApiSlice'
+import { useGetUserRefreshQuery } from './features/users/usersApiSlice'
 
 function App() {
   let auth = useSelector(selectCurrentToken)
-  const { } = useGetUsersQuery() //call backend that needs jwt for refresh 
+  useGetUserRefreshQuery()
 
   return (
     <>

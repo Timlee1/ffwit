@@ -2,7 +2,7 @@ import { apiSlice } from "../../app/baseApiSlice"
 
 export const usersApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
-    getUsers: builder.query({
+    getUserRefresh: builder.query({
       query: () => '/users'
     }),
     verifyUser: builder.query({
@@ -40,7 +40,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 });
 
 export const {
-  useGetUsersQuery,
+  useGetUserRefreshQuery,
   useVerifyUserQuery,
   useCreateUserMutation,
   useForgotPasswordMutation,

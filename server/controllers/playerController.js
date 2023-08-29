@@ -53,9 +53,11 @@ const simulation = async (req, res) => {
       //console.log(teamPointsFloat)
       const opponentPointsFloat = convertScoreFloat(opponentPoints)
       //console.log(opponentPointsFloat)
-      const userTeamPoints = teamPointsFloat + playersCorrelatedSample.slice(0, userTeam.length).reduce((accumulator, currentValue) => accumulator + currentValue)
+      //const userTeamPoints = teamPointsFloat + playersCorrelatedSample.slice(0, userTeam.length).reduce((accumulator, currentValue) => accumulator + currentValue)
+      const userTeamPoints = teamPointsFloat + getSumArray(playersCorrelatedSample.slice(0, userTeam.length))
       //console.log(userTeamPoints)
-      const opponentTeamPoints = opponentPointsFloat + playersCorrelatedSample.slice(userTeam.length).reduce((accumulator, currentValue) => accumulator + currentValue)
+      //const opponentTeamPoints = opponentPointsFloat + playersCorrelatedSample.slice(userTeam.length).reduce((accumulator, currentValue) => accumulator + currentValue)
+      const opponentTeamPoints = opponentPointsFloat + getSumArray(playersCorrelatedSample.slice(userTeam.length))
       //console.log(opponentTeamPoints)
       userBucketDistribution.set(Math.round(userTeamPoints), userBucketDistribution.get(Math.round(userTeamPoints)) + 1)
       opponentBucketDistribution.set(Math.round(opponentTeamPoints), opponentBucketDistribution.get(Math.round(opponentTeamPoints)) + 1)
@@ -64,12 +66,19 @@ const simulation = async (req, res) => {
       if (userTeamPoints > opponentTeamPoints) { wins = wins + 1 }
       i = i + 1;
     }
-    const userData = convertBucketDistributionToData(userBucketDistribution)
+    const userData = convertBucketDistributionToData(userBucketDistribution, 10000 / 1000)
     //console.log(userData)
-    const opponentData = convertBucketDistributionToData(opponentBucketDistribution)
+    const opponentData = convertBucketDistributionToData(opponentBucketDistribution, 10000 / 1000)
     //console.log(opponentData)
+    const userStatistics = getStatistics(userSample)
+    userStatistics['winPercentage'] = String(((wins / i)).toFixed(2))
+    //console.log(userStatistics)
+    const opponentStatistics = getStatistics(opponentSample)
+    opponentStatistics['winPercentage'] = String(((1 - (wins / i))).toFixed(2))
+    //console.log(opponentStatistics)
 
-    return res.status(201).json({ userData: userData, opponentData: opponentData })
+
+    return res.status(201).json({ userData: userData, opponentData: opponentData, userStatistics: userStatistics, opponentStatistics: opponentStatistics })
   } catch (err) {
     console.log(err)
     return res.status(400).json({ message: 'Unable to simulate model' })
@@ -290,16 +299,18 @@ const createPlayersCorrelatedSample = (choleskyDecompositionMatrix, playersUncor
 }
 
 const convertScoreFloat = (points) => {
-  const score = points.trim()
-  const re = new RegExp("^[0-9]{0,3}$|^[0-9]{0,3}.[0-9]{1,3}$")
-  if (score == '') {
-    return 0
-  }
-  if (re.test(score)) {
-    return parseFloat(score)
-  } else {
-    return null
-  }
+  if (typeof points === 'string') {
+    const score = points.trim()
+    const re = new RegExp("^[0-9]{0,3}$|^[0-9]{0,3}.[0-9]{1,3}$")
+    if (score == '') {
+      return 0
+    }
+    if (re.test(score)) {
+      return parseFloat(score)
+    } else {
+      return null
+    }
+  } else return points
 }
 
 const createBucketDistribution = (min, max) => {
@@ -311,7 +322,7 @@ const createBucketDistribution = (min, max) => {
   return bucketDistribution
 }
 
-const convertBucketDistributionToData = (bucketDistribution) => {
+const convertBucketDistributionToData = (bucketDistribution, lineY) => {
   data = []
   for (const [key, value] of bucketDistribution) {
 
@@ -322,15 +333,59 @@ const convertBucketDistributionToData = (bucketDistribution) => {
       data.push(dataPoint)
     }
   }
-  firstX = data[0].x
-  const firstDataPoint = new Object();
-  firstDataPoint.x = firstX - 1
-  firstDataPoint.y = 0
-  data.unshift(firstDataPoint)
-  lastX = data[data.length - 1].x
-  const lastDataPoint = new Object();
-  lastDataPoint.x = lastX + 1
-  lastDataPoint.y = 0
-  data.push(lastDataPoint)
+  if (data.length > 1) {
+    firstX = data[0].x
+    const firstDataPoint = new Object();
+    firstDataPoint.x = firstX - 1
+    firstDataPoint.y = 0
+    data.unshift(firstDataPoint)
+    lastX = data[data.length - 1].x
+    const lastDataPoint = new Object();
+    lastDataPoint.x = lastX + 1
+    lastDataPoint.y = 0
+    data.push(lastDataPoint)
+  } else {
+    firstX = data[0].x
+    data[0].y = lineY
+    const firstDataPoint = new Object();
+    firstDataPoint.x = firstX
+    firstDataPoint.y = 0
+    data.unshift(firstDataPoint)
+  }
   return data
+}
+
+const sortArrayAscending = arr => arr.sort((a, b) => a - b);
+
+const getSumArray = arr => arr.reduce((a, b) => a + b, 0);
+
+const getMeanArray = arr => getSumArray(arr) / arr.length;
+
+const getStandardDeviation = (arr) => {
+  const mu = getMeanArray(arr);
+  const diffArr = arr.map(a => (a - mu) ** 2);
+  return Math.sqrt(getSumArray(diffArr) / (arr.length - 1));
+};
+
+const getQuantile = (sortedArray, q) => {
+  const pos = (sortedArray.length - 1) * q;
+  const base = Math.floor(pos);
+  const rest = pos - base;
+  if (sortedArray[base + 1] !== undefined) {
+    return sortedArray[base] + rest * (sortedArray[base + 1] - sortedArray[base]);
+  } else {
+    return sortedArray[base];
+  }
+};
+
+const getStatistics = (sample) => {
+  const sortedSample = sortArrayAscending(sample);
+  const mean = getMeanArray(sortedSample).toFixed(2)
+  const standardDeviation = getStandardDeviation(sortedSample).toFixed(2)
+  const tenPercentile = getQuantile(sortedSample, .1).toFixed(2)
+  const quarterPercentile = getQuantile(sortedSample, .25).toFixed(2)
+  const median = getQuantile(sortedSample, .5).toFixed(2)
+  const threeQuartersPercentile = getQuantile(sortedSample, .75).toFixed(2)
+  const ninetyPercentile = getQuantile(sortedSample, .9).toFixed(2)
+  return { mean: mean, standardDeviation: standardDeviation, tenPercentile: tenPercentile, quarterPercentile: quarterPercentile, median: median, threeQuartersPercentile: threeQuartersPercentile, ninetyPercentile: ninetyPercentile }
 }

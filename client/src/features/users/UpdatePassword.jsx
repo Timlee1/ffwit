@@ -23,7 +23,6 @@ const UpdatePassword = () => {
         setMsg('Current and confirm emails are not the same');
       } else {
         const resp = await updateUserPassword({ email, currentPassword, newPassword })
-        console.log(resp)
         if (resp?.error?.data?.message) {
           setMsg(resp?.error?.data?.message);
         }

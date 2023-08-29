@@ -37,7 +37,6 @@ const createCustomerPortalSession = async (req, res) => {
     }
     const stripeId = user.rows[0].stripe_id
     const returnURL = baseURL + '/profile'
-    console.log("here")
     const session = await stripe.billingPortal.sessions.create({
       customer: stripeId,
       return_url: returnURL,

@@ -6,12 +6,13 @@ function Navbar({ auth }) {
   return (
     <nav>
       <ul>
+        <li><Link to="">Home</Link></li>
         {!auth && <li><Link to="/signup">Signup</Link></li>}
         {!auth && <li><Link to="/login">Login</Link></li>}
-        {auth && <li><Logout /></li>}
         {auth && <li><Link to="/profile">Profile</Link></li>}
         {auth && <li><Link to="/payment">Payment</Link></li>}
         {auth && <li><Link to="/simulation">Simulation</Link></li>}
+        {auth && <li><Logout /></li>}
       </ul>
     </nav>
   )

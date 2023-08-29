@@ -18,13 +18,9 @@ const transporter = nodemailer.createTransport({
   sendingRate: 1
 });
 
-const getAllUsers = async (req, res) => {
+const getUserRefresh = async (req, res) => {
   try {
-    const users = await postgres.query("SELECT id, email FROM users")
-    if (!users) {
-      return res.status(400).json({ message: 'No users found' })
-    }
-    res.json(users)
+    res.json({ message: 'User Found' })
   } catch (err) {
     return res.status(400).json({ message: 'Error' })
   }
@@ -213,4 +209,4 @@ const resetPassword = async (req, res) => {
   }
 }
 
-module.exports = { getAllUsers, createUser, updatePassword, verifyUser, forgotPassword, resetPassword }
+module.exports = { getUserRefresh, createUser, updatePassword, verifyUser, forgotPassword, resetPassword }
