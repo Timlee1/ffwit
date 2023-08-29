@@ -34,13 +34,44 @@ const simulation = async (req, res) => {
     //console.log(choleskyDecompositionMatrix)
     const playersNormalDistribution = createPlayersNormalDistribution(players, scoring.value)
     //console.log(playersNormalDistribution)
-    const playersUncorrelatedSample = createPlayersUncorrelatedSample(playersNormalDistribution)
-    //console.log(playersUncorrelatedSample)
-    const playersCorrelatedSample = createPlayersCorrelatedSample(choleskyDecompositionMatrix, playersUncorrelatedSample)
-    //console.log(playersCorrelatedSample)
 
-    return res.status(201).json({ players: "test" })
+
+    let userBucketDistribution = createBucketDistribution(0, 500)
+    //console.log(userBucketDistribution)
+    let opponentBucketDistribution = createBucketDistribution(0, 500)
+    //console.log(opponentBucketDistribution)
+    let userSample = [];
+    let opponentSample = [];
+    let wins = 0
+    let i = 0;
+    while (i < 10000) {
+      const playersUncorrelatedSample = createPlayersUncorrelatedSample(playersNormalDistribution)
+      //console.log(playersUncorrelatedSample)
+      const playersCorrelatedSample = createPlayersCorrelatedSample(choleskyDecompositionMatrix, playersUncorrelatedSample)
+      //console.log(playersCorrelatedSample)
+      const teamPointsFloat = convertScoreFloat(teamPoints)
+      //console.log(teamPointsFloat)
+      const opponentPointsFloat = convertScoreFloat(opponentPoints)
+      //console.log(opponentPointsFloat)
+      const userTeamPoints = teamPointsFloat + playersCorrelatedSample.slice(0, userTeam.length).reduce((accumulator, currentValue) => accumulator + currentValue)
+      //console.log(userTeamPoints)
+      const opponentTeamPoints = opponentPointsFloat + playersCorrelatedSample.slice(userTeam.length).reduce((accumulator, currentValue) => accumulator + currentValue)
+      //console.log(opponentTeamPoints)
+      userBucketDistribution.set(Math.round(userTeamPoints), userBucketDistribution.get(Math.round(userTeamPoints)) + 1)
+      opponentBucketDistribution.set(Math.round(opponentTeamPoints), opponentBucketDistribution.get(Math.round(opponentTeamPoints)) + 1)
+      userSample.push(userTeamPoints)
+      opponentSample.push(opponentTeamPoints)
+      if (userTeamPoints > opponentTeamPoints) { wins = wins + 1 }
+      i = i + 1;
+    }
+    const userData = convertBucketDistributionToData(userBucketDistribution)
+    //console.log(userData)
+    const opponentData = convertBucketDistributionToData(opponentBucketDistribution)
+    //console.log(opponentData)
+
+    return res.status(201).json({ userData: userData, opponentData: opponentData })
   } catch (err) {
+    console.log(err)
     return res.status(400).json({ message: 'Unable to simulate model' })
   }
 }
@@ -256,4 +287,50 @@ const createPlayersCorrelatedSample = (choleskyDecompositionMatrix, playersUncor
     sample.push(playerSample)
   }
   return sample
+}
+
+const convertScoreFloat = (points) => {
+  const score = points.trim()
+  const re = new RegExp("^[0-9]{0,3}$|^[0-9]{0,3}.[0-9]{1,3}$")
+  if (score == '') {
+    return 0
+  }
+  if (re.test(score)) {
+    return parseFloat(score)
+  } else {
+    return null
+  }
+}
+
+const createBucketDistribution = (min, max) => {
+  let bucketDistribution = new Map();
+  for (i = min; i <= max; i++) {
+    let key = i.toString()
+    bucketDistribution.set(i, 0)
+  }
+  return bucketDistribution
+}
+
+const convertBucketDistributionToData = (bucketDistribution) => {
+  data = []
+  for (const [key, value] of bucketDistribution) {
+
+    if (value != 0) {
+      let dataPoint = new Object();
+      dataPoint.x = key
+      dataPoint.y = value
+      data.push(dataPoint)
+    }
+  }
+  firstX = data[0].x
+  const firstDataPoint = new Object();
+  firstDataPoint.x = firstX - 1
+  firstDataPoint.y = 0
+  data.unshift(firstDataPoint)
+  lastX = data[data.length - 1].x
+  const lastDataPoint = new Object();
+  lastDataPoint.x = lastX + 1
+  lastDataPoint.y = 0
+  data.push(lastDataPoint)
+  return data
 }

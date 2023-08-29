@@ -14,9 +14,11 @@ import ForgotPassword from "./features/users/ForgotPassword"
 import ResetPassword from "./features/users/ResetPassword"
 import { selectCurrentToken } from './features/auth/authSlice'
 import { useSelector } from "react-redux/es/hooks/useSelector"
+import { useGetUsersQuery } from './features/users/usersApiSlice'
 
 function App() {
-  const auth = useSelector(selectCurrentToken)
+  let auth = useSelector(selectCurrentToken)
+  const { } = useGetUsersQuery() //call backend that needs jwt for refresh 
 
   return (
     <>
@@ -32,7 +34,7 @@ function App() {
           <Route path="/reset-password" element={<ResetPassword />} />
           {auth && <Route path="/profile" element={<Profile />} />}
           {auth && <Route path="/payment" element={<Payment />} />}
-          {auth && <Route path="/simulation" element={<Simulation />} />}
+          <Route path="/simulation" element={<Simulation />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>
