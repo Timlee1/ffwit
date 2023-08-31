@@ -20,10 +20,10 @@ const Payment = () => {
   }
 
   return (
-    <>
+    <main>
       <button onClick={checkout('price_1NgCh2BUPgZpckEJZ8KLvfDo')}>Basic Checkout</button>
       <button onClick={checkout('price_1NgCfgBUPgZpckEJDHw7lxOk')}>Premium Checkout</button>
-    </>
+    </main>
   )
 }
 

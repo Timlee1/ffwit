@@ -15,7 +15,7 @@ const Simulate = ({ scoring, teamPoints, opponentPoints, userPlayers, opponentPl
     isError,
     error
   }] = useCreateSimulationMutation()
-  const [msg, setMsg] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
   const handleSimulate = async (e) => {
     e.preventDefault()
     try {
@@ -45,18 +45,27 @@ const Simulate = ({ scoring, teamPoints, opponentPoints, userPlayers, opponentPl
       })
     } catch (err) {
       if (err?.data?.message) {
-        setMsg(err.data.message);
+        setErrorMessage(err.data.message);
       } else {
-        setMsg('No Server Response');
+        setErrorMessage('No Server Response');
       }
     }
   }
+  let content
+  if (isLoading) {
+    content = <h2>Loading...</h2>
+  } else if (isSuccess && userData && userStatistics && opponentStatistics) {
+    content = <>
+      <Scatter data={userData} />
+      <SimulationStatisticsTable userStatistics={userStatistics} opponentStatistics={opponentStatistics} />
+    </>
+  }
+
   return (
     <>
       <button onClick={handleSimulate}>Simulate</button>
-      {msg}
-      {userData && <Scatter data={userData} />}
-      {userStatistics && opponentStatistics && <SimulationStatisticsTable userStatistics={userStatistics} opponentStatistics={opponentStatistics} />}
+      {errorMessage}
+      {content}
     </>
   )
 }

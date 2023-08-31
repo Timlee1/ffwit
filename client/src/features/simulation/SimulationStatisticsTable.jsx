@@ -17,7 +17,7 @@ const SimulationStatisticsTable = ({ userStatistics, opponentStatistics }) => {
         </tr>
       </thead>
       <tbody>
-        <SimulationStatisticsRow playerStatistics={userStatistics} name={"User"} />
+        <SimulationStatisticsRow playerStatistics={userStatistics} name={"Team"} />
         <SimulationStatisticsRow playerStatistics={opponentStatistics} name={"Opponent"} />
       </tbody>
     </table >

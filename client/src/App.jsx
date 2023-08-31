@@ -24,6 +24,7 @@ function App() {
     <>
       <BrowserRouter>
         <Navbar auth={auth} />
+
         <Routes>
           <Route index element={<Home />} />
           {!auth && <Route path="/login" element={<Login />} />}
@@ -37,6 +38,7 @@ function App() {
           <Route path="/simulation" element={<Simulation />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
+
       </BrowserRouter>
     </>
   )

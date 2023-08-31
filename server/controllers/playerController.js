@@ -34,8 +34,6 @@ const simulation = async (req, res) => {
     //console.log(choleskyDecompositionMatrix)
     const playersNormalDistribution = createPlayersNormalDistribution(players, scoring.value)
     //console.log(playersNormalDistribution)
-
-
     let userBucketDistribution = createBucketDistribution(0, 500)
     //console.log(userBucketDistribution)
     let opponentBucketDistribution = createBucketDistribution(0, 500)
@@ -44,7 +42,7 @@ const simulation = async (req, res) => {
     let opponentSample = [];
     let wins = 0
     let i = 0;
-    while (i < 10000) {
+    while (i < 100000) {
       const playersUncorrelatedSample = createPlayersUncorrelatedSample(playersNormalDistribution)
       //console.log(playersUncorrelatedSample)
       const playersCorrelatedSample = createPlayersCorrelatedSample(choleskyDecompositionMatrix, playersUncorrelatedSample)

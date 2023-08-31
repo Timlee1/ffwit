@@ -101,12 +101,12 @@ const Simulation = () => {
         handleScoringInput={handleScoringInput}
       />
       <Points
-        team={'User'}
+        team={'Team'}
         points={teamPoints}
         handlePointsInput={handleTeamPointsInput}
       />
       <AddablePlayerTable
-        team={'User'}
+        team={'Team'}
         players={userPlayers}
         options={options}
         handleAddPlayer={handleAddPlayer}
@@ -139,9 +139,9 @@ const Simulation = () => {
   }
 
   return (
-    <>
+    <main>
       {content}
-    </>
+    </main>
 
   )
 }

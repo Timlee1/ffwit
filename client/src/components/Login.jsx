@@ -4,6 +4,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setCredentials } from '../features/auth/authSlice'
 import { useLoginMutation } from '../features/auth/authApiSlice'
+import usePersist from '../hooks/usePersist'
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -12,7 +13,7 @@ const Login = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [login] = useLoginMutation()
-  const [persist, setPersist] = useState(false)
+  const [persist, setPersist] = usePersist()
 
   const handleSubmit = async (e) => {
     e.preventDefault()

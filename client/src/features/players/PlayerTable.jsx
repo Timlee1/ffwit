@@ -5,7 +5,7 @@ const PlayerTable = ({ players, onDeletePlayer }) => {
     <table>
       <thead>
         <tr>
-          <th>Player</th>
+          <th>Players</th>
           <th></th>
         </tr>
       </thead>
