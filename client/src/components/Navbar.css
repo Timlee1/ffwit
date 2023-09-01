@@ -2,231 +2,160 @@
   box-sizing: border-box;
 }
 
-body {
-  margin: 0;
-}
-
-.navbar {
-  background-color: #F0F8FF;
-  color: #777;
+.navbar-computer {
   display: flex;
   justify-content: space-between;
   align-items: stretch;
-  gap: 2rem;
-  padding: 0 1rem;
+  padding: .25rem 1.5rem .25rem 1.5rem;
+  background-color: var(--primary-color);
 }
 
 .site-title {
   font-size: 2rem;
 }
 
-.navbar-left {
+.navbar-computer-left {
   display: flex;
-  gap: 1rem;
 }
 
-.navbar-left ul {
-  padding: 0;
-  margin: 0;
+.navbar-computer-left ul {
+  display: flex;
   list-style: none;
-  height: 100%;
-  display: flex;
   gap: 1rem;
 }
 
-
-.navbar a,
-.navbar button {
-  color: inherit;
+.navbar-computer a {
   text-decoration: none;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  padding: .25rem;
-}
-
-.navbar button {
-  border: none;
-  background: none;
-  text-decoration: none;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: inherit;
-}
-
-.link {
-  padding: 0;
-}
-
-.link:hover {
   color: black;
 }
+
+.navbar-computer a:hover {
+  color: black;
+}
+
+.navbar-computer-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.navbar-computer-links ul {
+  display: flex;
+  list-style: none;
+  gap: 1rem;
+}
+
 
 .dropdown {
   position: relative;
   padding-left: 5rem;
 }
 
-.dropdown-menu {
-  position: absolute;
-  right: 0;
-  background-color: #F0F8FF;
-  padding: .25rem;
-  border-radius: .25rem;
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .1);
-  opacity: 0;
-  transform: translateY(-10px);
-  transition: opacity 150ms ease-in-out, transform 150ms ease-in-out;
-  margin: 0rem;
-  list-style: none;
-  margin-top: .25rem;
-  z-index: 1;
+
+.dropdown-button {
+  border: none;
+  cursor: pointer;
+  background-color: inherit;
+  font-size: 20px;
 }
 
-.dropdown>.link:focus+.dropdown-menu {
-  opacity: 1;
-}
-
-.navbar-small {
+.dropdown-content {
   display: none;
-  gap: 0rem;
+  position: absolute;
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.1);
+  right: 0;
+  top: 25%;
+  z-index: 1;
+  background-color: white;
 }
 
-.navbar-small-links {
-  height: 100%;
-}
-
-.navbar-small-links ul {
+.dropdown:hover .dropdown-content {
   display: flex;
-  margin: 0;
-  padding: 0;
-  width: 100%;
   flex-direction: column;
-
-}
-
-.navbar-small-links li {
-  list-style: none;
-
-}
-
-.navbar-small-links li a,
-.navbar-small-links button {
-  display: block;
-  text-decoration: none;
+  gap: 1rem;
   padding: 1rem;
+  list-style: none;
   text-align: center;
-  align-items: center;
-  width: 100%;
 }
 
-.navbar-small-links li:hover {
+.dropdown-content a {
+  text-decoration: none;
+}
+
+.dropdown-content button {
+  background-color: inherit;
+  border: none;
+  font-size: inherit;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.navbar-mobile {
+  display: none
+}
+
+.navbar-mobile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  padding: .25rem 1rem .25rem 1rem;
+  background-color: var(--primary-color);
+}
+
+.dropdown-button-mobile {
+  border: none;
+  cursor: pointer;
+  background-color: inherit;
+  font-size: 20px;
+  padding-top: .5rem;
+}
+
+.open.navbar-mobile-links {
+  display: flex;
+}
+
+.navbar-mobile-links ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  gap: 1rem;
+  padding: 0rem;
+}
+
+.navbar-mobile a {
+  text-decoration: none;
   color: black;
 }
 
-.navbar-small-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
+.navbar-mobile-links button {
+  background-color: inherit;
+  border: none;
+  font-size: inherit;
+  font-family: inherit;
+  cursor: pointer;
 }
 
-@media screen and (max-width: 768px) {
-  .navbar-big {
+.navbar-mobile-links a:hover {
+  color: black;
+}
+
+@media screen and (max-width: 700px) {
+  .navbar-computer {
     display: none;
   }
 
-  .navbar-small {
+  .navbar-mobile {
     display: flex;
     flex-direction: column;
   }
 
+  .navbar-mobile-links {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+
+  }
 }
-
-
-
-/* import React from 'react'
-import { Link } from 'react-router-dom'
-import Logout from '../features/users/Logout'
-import './Navbar.css'
-
-function Navbar({ auth }) {
-  return (
-    <nav class="navbar">
-      <div class="site-title"><Link to="">Fantasy Wit</Link></div>
-      <div class="navbar-links">
-        <ul>
-          {!auth && <li><Link to="/signup">Signup</Link></li>}
-          {!auth && <li><Link to="/login">Login</Link></li>}
-          {auth && <li><Link to="/profile">Profile</Link></li>}
-          {auth && <li><Link to="/payment">Payment</Link></li>}
-          {auth && <li><Link to="/simulation">Simulation</Link></li>}
-          {auth && <li><Logout /></li>}
-        </ul>
-      </div>
-    </nav>
-  )
-}
-
-export default Navbar
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-}
-
-.container {
-  margin: 1rem;
-  text-align: center;
-}
-
-.navbar {
-  background-color: #333;
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: stretch;
-  gap: 2rem;
-  padding: 0 1rem;
-}
-
-.site-title {
-  font-size: 2rem;
-}
-
-.navbar ul {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-  height: 100%;
-  display: flex;
-  gap: 1rem;
-}
-
-.navbar a,
-.navbar button {
-  color: inherit;
-  text-decoration: none;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  padding: .25rem;
-}
-
-.navbar li.active {
-  background-color: #555;
-}
-
-.navbar li:hover {
-  background-color: #777;
-}
-
-.navbar button {
-  border: none;
-  background: none;
-  font-family: inherit;
-  font-size: inherit;
-} */

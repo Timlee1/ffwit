@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-
 import { useDispatch } from 'react-redux'
 import { setCredentials } from '../features/auth/authSlice'
 import { useLoginMutation } from '../features/auth/authApiSlice'
 import usePersist from '../hooks/usePersist'
+import './Login.css'
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -42,41 +42,55 @@ const Login = () => {
 
   return (
     <main>
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="email">Email:</label>
-        <input
-          type="text"
-          id="email"
-          value={email}
-          onChange={handleUserInput}
-          required
-        />
-        <label htmlFor="password">Password:</label>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={handlePasswordInput}
-          required
-        />
-        <button>Sign In</button>
-        <label htmlFor="persist">
-          <input
-            type="checkbox"
-            id="persist"
-            onChange={handleToggle}
-            checked={persist}
-          />
-          Trust This Device
-        </label>
-        {msg && <p>{msg}</p>}
-        <div>
-          <Link to="/forgot-password">Forgot Password?</Link>
+      <div className="login">
+        <h1 class="login-header">Log In To Your Account</h1>
+        <div className="login-form">
+          <form className="login-form-form" onSubmit={handleSubmit}>
+            <div className="email-login">
+              <label htmlFor="email">Email</label>
+              <input
+                type="text"
+                id="email"
+                className="email"
+                value={email}
+                onChange={handleUserInput}
+                placeholder='Your Email'
+                required
+              />
+            </div>
+            <div className="password-login">
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={handlePasswordInput}
+                placeholder='Your Password'
+                required
+              />
+            </div>
+            <button>Sign In</button>
+            {msg && <p>{msg}</p>}
+          </form>
+          <div className="persist-login">
+            <label htmlFor="persist">
+              <input
+                type="checkbox"
+                id="persist"
+                onChange={handleToggle}
+                checked={persist}
+              />
+              Trust This Device
+            </label>
+          </div>
+          <div className="forget-password-login">
+            <Link to="/forgot-password">Forgot Password?</Link>
+          </div>
         </div>
-      </form>
-      <div>
-        Don't have an account? <Link to="/signup">Sign Up</Link>
+
+        <div className="login-to-sign-up">
+          Don't have an account?<Link to="/signup">Sign Up</Link>
+        </div>
       </div>
     </main>
   )

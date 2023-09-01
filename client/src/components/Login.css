@@ -1,0 +1,116 @@
+h1.login-header {
+  text-align: center;
+  font-weight: normal;
+}
+
+.login {
+  padding: 4rem;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 1rem 25rem 0 25rem;
+  padding: 2rem;
+  background-color: white;
+  border-radius: 15px;
+}
+
+.email-login {
+  display: flex;
+  flex-direction: column;
+  border: solid 1px rgba(0, 0, 0, 0);
+  border-bottom-color: var(--primary-color)
+}
+
+.email {
+  border: none;
+  font-size: 16px;
+  width: 100%
+}
+
+.email:focus {
+  outline: none;
+}
+
+form.login-form-form input {
+  border: none;
+  font-size: 16px;
+  width: 100%;
+  padding-top: .5rem;
+}
+
+.password-login {
+  display: flex;
+  flex-direction: column;
+  border: solid 1px rgba(0, 0, 0, 0);
+  border-bottom-color: var(--primary-color);
+  margin: 1.5rem 0 1.5rem 0;
+}
+
+form.login-form-form button {
+  border: none;
+  font-size: 16px;
+  width: 100%;
+  padding: .75rem;
+  background-color: var(--primary-color);
+  cursor: pointer;
+}
+
+form.login-form-form p {
+  text-align: center;
+  color: darkred;
+}
+
+.persist-login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: .75rem;
+}
+
+.persist-login input {
+  cursor: pointer;
+}
+
+.forget-password-login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.forget-password-login a {
+  text-decoration: none;
+  color: var(--primary-color);
+}
+
+.login-to-sign-up {
+  display: flex;
+  justify-content: center;
+  margin: .5rem 25rem 0 25rem;
+  padding: 1rem;
+  background-color: white;
+  text-indent: .5em;
+  border-radius: 15px;
+}
+
+.login-to-sign-up a {
+  text-decoration: none;
+  color: var(--primary-color);
+}
+
+@media (max-width: 1200px) {
+  .login {
+    padding: 1rem;
+  }
+
+  .login-to-sign-up {
+    margin: 0;
+    margin-top: .5rem;
+  }
+
+  .login-form {
+    margin: 0
+  }
+}

@@ -20,7 +20,7 @@ const transporter = nodemailer.createTransport({
 
 const getUserRefresh = async (req, res) => {
   try {
-    res.json({ message: 'User Found' })
+    res.json({ email: req.email, message: 'User Found' })
   } catch (err) {
     return res.status(400).json({ message: 'Error' })
   }

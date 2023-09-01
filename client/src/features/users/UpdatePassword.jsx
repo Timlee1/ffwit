@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useUpdatePasswordMutation } from './usersApiSlice'
 
-const UpdatePassword = () => {
-  const [email, setEmail] = useState('')
+const UpdatePassword = ({ initialEmail }) => {
+  const [email, setEmail] = useState(initialEmail)
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')

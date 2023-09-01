@@ -1,0 +1,96 @@
+h1.sign-up-header {
+  text-align: center;
+  font-weight: normal;
+}
+
+.sign-up {
+  padding: 4rem;
+}
+
+.sign-up-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 1rem 25rem 0 25rem;
+  padding: 2rem;
+  background-color: white;
+  border-radius: 15px;
+}
+
+.email-sign-up {
+  display: flex;
+  flex-direction: column;
+  border: solid 1px rgba(0, 0, 0, 0);
+  border-bottom-color: var(--primary-color)
+}
+
+.email {
+  border: none;
+  font-size: 16px;
+  width: 100%
+}
+
+.email:focus {
+  outline: none;
+}
+
+form.sign-up-form-form input {
+  border: none;
+  font-size: 16px;
+  width: 100%;
+  padding-top: .5rem;
+}
+
+.password-sign-up {
+  display: flex;
+  flex-direction: column;
+  border: solid 1px rgba(0, 0, 0, 0);
+  border-bottom-color: var(--primary-color);
+  margin: 1.5rem 0 1.5rem 0;
+}
+
+form.sign-up-form-form button {
+  border: none;
+  font-size: 16px;
+  width: 100%;
+  padding: .75rem;
+  background-color: var(--primary-color);
+  cursor: pointer;
+}
+
+form.sign-up-form-form p {
+  text-align: center;
+  color: darkred;
+}
+
+
+
+.sign-up-to-login {
+  display: flex;
+  justify-content: center;
+  margin: .5rem 25rem 0 25rem;
+  padding: 1rem;
+  background-color: white;
+  text-indent: .5em;
+  border-radius: 15px;
+}
+
+.sign-up-to-login a {
+  text-decoration: none;
+  color: var(--primary-color);
+}
+
+@media (max-width: 1200px) {
+  .sign-up {
+    padding: 1rem;
+  }
+
+  .sign-up-to-login {
+    margin: 0;
+    margin-top: .5rem;
+  }
+
+  .sign-up-form {
+    margin: 0
+  }
+}

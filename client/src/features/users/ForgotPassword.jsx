@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useForgotPasswordMutation } from './usersApiSlice'
+import './ForgotPassword.css'
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('')
@@ -24,19 +25,27 @@ const ForgotPassword = () => {
 
   return (
     <main>
-      <h1>Forgot Password</h1>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="email">Email:</label>
-        <input
-          type="text"
-          id="email"
-          value={email}
-          onChange={handleEmailInput}
-          required
-        />
-        <button>Send Reset Password Email</button>
-        {msg && <p>{msg}</p>}
-      </form>
+      <div className="forgot-password">
+        <h1 className="forgot-password-header">Forgot Password</h1>
+        <div className="forgot-password-form">
+          <form className="forgot-password-form-form" onSubmit={handleSubmit}>
+            <div className="email-forgot-password">
+              <label htmlFor="email">Email:</label>
+              <input
+                type="text"
+                id="email"
+                className="email"
+                placeholder="Your Email"
+                value={email}
+                onChange={handleEmailInput}
+                required
+              />
+            </div>
+            <button>Send Reset Password Email</button>
+            {msg && <p>{msg}</p>}
+          </form>
+        </div>
+      </div>
     </main>
   )
 }
