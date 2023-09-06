@@ -26,7 +26,7 @@ function App() {
         <Navbar auth={auth} />
 
         <Routes>
-          <Route index element={<Home />} />
+          <Route index element={<Home auth={auth} />} />
           {!auth && <Route path="/login" element={<Login />} />}
           {auth && <Route path="/logout" element={<Logout />} />}
           {!auth && <Route path="/signup" element={<SignUp />} />}

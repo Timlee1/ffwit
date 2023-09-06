@@ -35,6 +35,7 @@ const stripeWebhook = async (req, res) => {
     case 'customer.created':
       try {
         data = data.object
+        console.log(data)
         const email = data.email
         const find_user_query = {
           text: "SELECT * FROM USERS WHERE email = $1",

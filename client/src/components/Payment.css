@@ -1,0 +1,11 @@
+.pricing-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.pricing-page-background {
+  height: 100vh;
+  background-color: var(--primary-color);
+}
