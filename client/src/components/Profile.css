@@ -1,0 +1,15 @@
+.profile-logout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem;
+}
+
+
+.profile-logout button {
+  border: none;
+  font-size: 16px;
+  padding: .75rem;
+  background-color: var(--primary-color);
+  cursor: pointer;
+}

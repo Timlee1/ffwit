@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useCreateCustomerPortalSessionMutation } from './paymentApiSlice'
-
+import './ManageBilling.css'
 
 const ManageBilling = () => {
   const [msg, setMsg] = useState('')
@@ -22,7 +22,9 @@ const ManageBilling = () => {
   }
 
   return (
-    <button onClick={manageBilling}>Manage Billing</button>
+    <div className="manage-billing">
+      <button className="manage-billing-button" onClick={manageBilling}>Manage Billing</button>
+    </div>
   )
 }
 

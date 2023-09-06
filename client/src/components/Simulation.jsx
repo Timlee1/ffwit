@@ -9,6 +9,7 @@ import { addPlayer, removePlayer, addOpponentPlayer, removeOpponentPlayer, selec
 import { useGetPlayersQuery } from '../features/players/playersApiSlice'
 import { changeTeamPoints, selectTeamPoints, changeOpponentPoints, selectOpponentPoints } from '../features/settings/settingsSlice'
 import { changeScoring, selectScoring } from '../features/settings/settingsSlice'
+import './Simulation.css'
 
 const Simulation = () => {
   const [userPlayers, setUserPlayers] = useState(useSelector(selectUserPlayers))
@@ -95,52 +96,82 @@ const Simulation = () => {
   if (isLoading) {
     content = <h2>Loading...</h2>
   } else if (isSuccess) {
-    content = <>
-      <ScoringSettings
-        scoring={scoring}
-        handleScoringInput={handleScoringInput}
-      />
-      <Points
-        team={'Team'}
-        points={teamPoints}
-        handlePointsInput={handleTeamPointsInput}
-      />
-      <AddablePlayerTable
-        team={'Team'}
-        players={userPlayers}
-        options={options}
-        handleAddPlayer={handleAddPlayer}
-        handleDeletePlayer={handleDeletePlayer}
-        message={userMsg}
-      />
-      <Points
-        team={'Opponent'}
-        points={opponentPoints}
-        handlePointsInput={handleOpponentPointsInput}
-      />
-      <AddablePlayerTable
-        team={'Opponent'}
-        players={opponentPlayers}
-        options={options}
-        handleAddPlayer={handleAddOpponentPlayer}
-        handleDeletePlayer={handleDeleteOpponentPlayer}
-        message={opponentMsg}
-      />
-      <Simulate
-        scoring={scoring}
-        teamPoints={teamPoints}
-        opponentPoints={opponentPoints}
-        userPlayers={userPlayers}
-        opponentPlayers={opponentPlayers}
-      />
-    </>
+    content =
+      <div className="simulation">
+        <div className="simulation-settings">
+          <div className="team">
+            <h3 className="simulation-settings-header">Your Team</h3>
+            <div className="simulation-points">
+              <Points
+                team={'Team'}
+                points={teamPoints}
+                handlePointsInput={handleTeamPointsInput}
+              />
+            </div>
+            <div>
+              <AddablePlayerTable
+                team={'Team'}
+                players={userPlayers}
+                options={options}
+                handleAddPlayer={handleAddPlayer}
+                handleDeletePlayer={handleDeletePlayer}
+                message={userMsg}
+              />
+            </div>
+          </div>
+          <div className="team">
+            <h3 className="simulation-settings-header">Opponent's Team</h3>
+            <div className="simulation-points">
+              <Points
+                team={'Opponent'}
+                points={opponentPoints}
+                handlePointsInput={handleOpponentPointsInput}
+              />
+            </div>
+            <div>
+              <AddablePlayerTable
+                team={'Opponent'}
+                players={opponentPlayers}
+                options={options}
+                handleAddPlayer={handleAddOpponentPlayer}
+                handleDeletePlayer={handleDeleteOpponentPlayer}
+                message={opponentMsg}
+              />
+            </div>
+          </div>
+
+        </div>
+        <div className="simulation-scoring">
+          <div className="simulation-scoring-text">
+            Scoring:
+          </div>
+          <div className="simulation-scoring-dropdown">
+            <ScoringSettings
+              scoring={scoring}
+              handleScoringInput={handleScoringInput}
+            />
+          </div>
+        </div>
+
+        <Simulate
+          scoring={scoring}
+          teamPoints={teamPoints}
+          opponentPoints={opponentPoints}
+          userPlayers={userPlayers}
+          opponentPlayers={opponentPlayers}
+        />
+
+      </div>
   } else if (isError || error) {
     content = <div>Error</div>
   }
 
   return (
     <main>
+
+      <h1 className="simulation-header">Simulation</h1>
       {content}
+
     </main>
 
   )

@@ -1,0 +1,16 @@
+.add-player {
+  display: flex;
+  gap: .25em;
+}
+
+.add-player-dropdown {
+  min-width: 15em;
+
+}
+
+.add-player button {
+  border: none;
+  padding: .75rem;
+  background-color: var(--primary-color);
+  cursor: pointer;
+}

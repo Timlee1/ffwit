@@ -50,6 +50,7 @@ const SignUp = () => {
               <input
                 type="password"
                 id="password"
+                className="password"
                 placeholder="Your Password"
                 value={password}
                 onChange={handlePasswordInput}

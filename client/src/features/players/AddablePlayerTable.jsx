@@ -4,7 +4,6 @@ import AddPlayer from './AddPlayer'
 const AddablePlayerTable = ({ team, players, options, handleAddPlayer, handleDeletePlayer, message }) => {
   return (
     <>
-      {team}
       <AddPlayer
         options={options.players}
         onAddPlayer={handleAddPlayer}

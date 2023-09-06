@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSendLogoutMutation } from '../auth/authApiSlice'
+import { FiLogOut } from 'react-icons/fi';
 
 const Logout = () => {
   const [msg, setMsg] = useState('')
@@ -26,7 +27,7 @@ const Logout = () => {
     <>
       <button
         onClick={handleSubmit}
-      >Logout
+      ><FiLogOut /> Logout
       </button>
       {msg && <p>{msg}</p>}
     </>

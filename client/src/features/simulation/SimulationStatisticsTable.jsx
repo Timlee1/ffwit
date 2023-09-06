@@ -6,7 +6,7 @@ const SimulationStatisticsTable = ({ userStatistics, opponentStatistics }) => {
       <thead>
         <tr>
           <th></th>
-          <th>Win %</th>
+          <th>Win%</th>
           <th>Average</th>
           <th>Std Dev</th>
           <th>10%</th>

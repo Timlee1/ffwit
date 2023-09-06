@@ -34,6 +34,11 @@ h1.sign-up-header {
   outline: none;
 }
 
+.password:focus {
+  outline: none;
+}
+
+
 form.sign-up-form-form input {
   border: none;
   font-size: 16px;

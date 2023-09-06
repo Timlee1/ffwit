@@ -1,6 +1,9 @@
 import PlayerRow from './PlayerRow'
 
 const PlayerTable = ({ players, onDeletePlayer }) => {
+  if (players.length == 0) {
+    return
+  }
   return (
     <table>
       <thead>

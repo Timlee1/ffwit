@@ -1,0 +1,45 @@
+.simulate-button {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.simulate-button button {
+  border: none;
+  font-size: 16px;
+  padding: .75rem;
+  background-color: var(--primary-color);
+  cursor: pointer;
+
+}
+
+.scatter-plot {
+  display: flex;
+  justify-content: center;
+}
+
+.statistics-table {
+  display: flex;
+  justify-content: center;
+  margin: 1em
+}
+
+.statistics-table td {
+  text-align: center;
+  vertical-align: middle;
+  margin: 0 1em 0 1em;
+}
+
+@media (min-width: 1200px) {
+  .scatter-plot {
+    max-height: 60%;
+
+  }
+}
+
+@media (max-width: 1200px) {
+  .scatter-plot {
+    margin: 0 .5rem 0 .5rem;
+
+  }
+}

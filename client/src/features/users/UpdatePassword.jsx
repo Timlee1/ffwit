@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useUpdatePasswordMutation } from './usersApiSlice'
+import './UpdatePassword.css'
 
 const UpdatePassword = ({ initialEmail }) => {
   const [email, setEmail] = useState(initialEmail)
@@ -53,43 +54,59 @@ const UpdatePassword = ({ initialEmail }) => {
 
   return (
     <main>
-      <h1>Update Password</h1>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="email">Email:</label>
-        <input
-          type="text"
-          id="email"
-          value={email}
-          onChange={handleEmailInput}
-          required
-        />
-        <label htmlFor="currentPassword">Current Password:</label>
-        <input
-          type="password"
-          id="currentPassword"
-          value={currentPassword}
-          onChange={handleCurrentPasswordInput}
-          required
-        />
-        <label htmlFor="newPassword">New Password:</label>
-        <input
-          type="password"
-          id="newPassword"
-          value={newPassword}
-          onChange={handleNewPasswordInput}
-          required
-        />
-        <label htmlFor="confirmPassword">Confirm Password:</label>
-        <input
-          type="password"
-          id="confirmPassword"
-          value={confirmPassword}
-          onChange={handleConfirmPasswordInput}
-          required
-        />
-        <button>Update</button>
-        {msg && <p>{msg}</p>}
-      </form>
+      <div className="update-password">
+        <h2 className="update-password-header">Update Password</h2>
+        <div className="update-password-form">
+          <form className="update-password-form-form" onSubmit={handleSubmit}>
+            <div className="email-update-password">
+              <label htmlFor="email">Email:</label>
+              <input
+                type="text"
+                id="email"
+                className="email"
+                value={email}
+                onChange={handleEmailInput}
+                required
+              />
+            </div>
+            <div className="password-update-password">
+              <label htmlFor="currentPassword">Current Password:</label>
+              <input
+                type="password"
+                id="currentPassword"
+                className="password"
+                value={currentPassword}
+                onChange={handleCurrentPasswordInput}
+                required
+              />
+            </div>
+            <div className="password-update-password">
+              <label htmlFor="newPassword">New Password:</label>
+              <input
+                type="password"
+                id="newPassword"
+                className="password"
+                value={newPassword}
+                onChange={handleNewPasswordInput}
+                required
+              />
+            </div>
+            <div className="password-update-password">
+              <label htmlFor="confirmPassword">Confirm Password:</label>
+              <input
+                type="password"
+                id="confirmPassword"
+                className="password"
+                value={confirmPassword}
+                onChange={handleConfirmPasswordInput}
+                required
+              />
+            </div>
+            <button>Update</button>
+            {msg && <p>{msg}</p>}
+          </form>
+        </div>
+      </div>
     </main>
   )
 }

@@ -1,7 +1,9 @@
+import './Points.css'
+
 const Points = ({ team, points, handlePointsInput }) => {
   return (
     <>
-      <label htmlFor="points">{team} Points:</label>
+      <label htmlFor="points">Points Already Scored:</label>
       <input
         type="text"
         id="points"
@@ -9,6 +11,7 @@ const Points = ({ team, points, handlePointsInput }) => {
         maxLength="6"
         onChange={handlePointsInput}
         value={points}
+        className="points"
       />
     </>
   )

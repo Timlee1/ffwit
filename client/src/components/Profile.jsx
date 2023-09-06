@@ -3,7 +3,7 @@ import Logout from '../features/users/Logout'
 import UpdatePassword from '../features/users/UpdatePassword'
 import ManageBilling from '../features/payment/ManageBilling'
 import { useGetUserRefreshQuery } from '../features/users/usersApiSlice'
-
+import './Profile.css'
 
 const Profile = () => {
   const {
@@ -18,7 +18,9 @@ const Profile = () => {
     <main>
       {isSuccess && <UpdatePassword initialEmail={data.email} />}
       <ManageBilling />
-      <Logout />
+      <div className="profile-logout">
+        <Logout />
+      </div>
     </main>
   )
 }
