@@ -30,9 +30,9 @@ function App() {
           {!auth && <Route path="/login" element={<Login />} />}
           {auth && <Route path="/logout" element={<Logout />} />}
           {!auth && <Route path="/signup" element={<SignUp />} />}
-          {!auth && <Route path="/verify" element={<VerifyEmail />} />}
+          {/* {!auth && <Route path="/verify" element={<VerifyEmail />} />}
           <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} /> */}
           {auth && <Route path="/profile" element={<Profile />} />}
           {auth && <Route path="/payment" element={<Payment />} />}
           <Route path="/simulation" element={<Simulation />} />

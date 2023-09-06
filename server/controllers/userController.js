@@ -53,27 +53,29 @@ const createUser = async (req, res) => {
       values: [email, hashedPassword]
     }
     await postgres.query(create_user_query)
-    try {
-      const token = jwt.sign(
-        {
-          "email": email,
-        },
-        process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: VERIFICATION_TOKEN_EXPIRATION }
-      )
-      const url = process.env.CLIENT + `/verify?token=${token}`
-      await transporter.sendMail(
-        {
-          from: process.env.EMAIL, //CHANGE THIS TO EMAIL VAR IN PRODUCTION
-          to: process.env.EMAIL,
-          subject: "Message",
-          html: `Please click this link to confirm your email: <a href="${url}">${url}</a>`
-        },
-      );
-      res.status(201).json({ message: `New user ${email} created` })
-    } catch (err) {
-      return res.status(400).json({ message: 'Unable to send verification link' })
-    }
+    console.log("here")
+    res.status(201).json({ message: `New user ${email} created` })
+    // try {
+    //   const token = jwt.sign(
+    //     {
+    //       "email": email,
+    //     },
+    //     process.env.ACCESS_TOKEN_SECRET,
+    //     { expiresIn: VERIFICATION_TOKEN_EXPIRATION }
+    //   )
+    //   const url = process.env.CLIENT + `/verify?token=${token}`
+    //   await transporter.sendMail(
+    //     {
+    //       from: process.env.EMAIL, //CHANGE THIS TO EMAIL VAR IN PRODUCTION
+    //       to: process.env.EMAIL,
+    //       subject: "Message",
+    //       html: `Please click this link to confirm your email: <a href="${url}">${url}</a>`
+    //     },
+    //   );
+    //   res.status(201).json({ message: `New user ${email} created` })
+    // } catch (err) {
+    //   return res.status(400).json({ message: 'Unable to send verification link' })
+    // }
   } catch (err) {
     return res.status(400).json({ message: 'Unable to create user' })
   }
@@ -168,14 +170,14 @@ const forgotPassword = async (req, res) => {
       { expiresIn: VERIFICATION_TOKEN_EXPIRATION }
     )
     const url = process.env.CLIENT + `/reset-password?token=${token}`
-    await transporter.sendMail(
-      {
-        from: process.env.EMAIL, //CHANGE THIS TO EMAIL VAR IN PRODUCTION
-        to: process.env.EMAIL,
-        subject: "Message",
-        html: `Please click this link to reset your password: <a href="${url}">${url}</a>`
-      },
-    );
+    // await transporter.sendMail(
+    //   {
+    //     from: process.env.EMAIL, //CHANGE THIS TO EMAIL VAR IN PRODUCTION
+    //     to: process.env.EMAIL,
+    //     subject: "Message",
+    //     html: `Please click this link to reset your password: <a href="${url}">${url}</a>`
+    //   },
+    // );
 
     res.status(201).json({ message: `Reset password email was sent` })
 

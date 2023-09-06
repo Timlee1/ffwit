@@ -84,9 +84,9 @@ const Login = () => {
               Trust This Device
             </label>
           </div>
-          <div className="forget-password-login">
+          {/* <div className="forget-password-login">
             <Link to="/forgot-password">Forgot Password?</Link>
-          </div>
+          </div> */}
         </div>
 
         <div className="login-to-sign-up">

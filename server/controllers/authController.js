@@ -33,10 +33,10 @@ const login = asyncHandler(async (req, res) => {
     return res.status(401).json({ message: 'Unauthorized' })
   }
 
-  const is_verified = user.rows[0].is_verified
-  if (!is_verified) {
-    return res.status(401).json({ message: 'Not Verified' })
-  }
+  // const is_verified = user.rows[0].is_verified
+  // if (!is_verified) {
+  //   return res.status(401).json({ message: 'Not Verified' })
+  // }
 
 
 

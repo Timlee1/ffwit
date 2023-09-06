@@ -17,7 +17,7 @@ const SignUp = () => {
       await signUp({ email, password }).unwrap()
       setEmail('')
       setPassword('')
-      setMsg('Verifcation link sent to email')
+      setMsg('Account created')
     } catch (err) {
       if (err?.data?.message) {
         setMsg(err.data.message);
