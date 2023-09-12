@@ -7,6 +7,7 @@ const verifyJWT = require('../middleware/verifyJWT')
 router.route('/')
   .get(playerController.getPlayers)
 
+router.use(verifyJWT)
 router.route('/simulation')
   .post(playerController.simulation)
 

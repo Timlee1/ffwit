@@ -1,6 +1,7 @@
 const playersData = require('../utils/playersData')
 const correlationMatrix = require('../utils/correlationMatrix')
 const rankData = require('../utils/rankData')
+const postgres = require('../database/postgres')
 
 const getPlayers = async (req, res) => {
   try {
@@ -23,6 +24,7 @@ const getPlayers = async (req, res) => {
 const simulation = async (req, res) => {
   try {
     const { scoring, teamPoints, opponentPoints, userPlayers, opponentPlayers } = req.body
+    const email = req.email
     //console.log(userPlayers)
     const userTeam = getPlayersData(userPlayers)
     //console.log(userTeam)
@@ -38,11 +40,33 @@ const simulation = async (req, res) => {
     //console.log(userBucketDistribution)
     let opponentBucketDistribution = createBucketDistribution(0, 500)
     //console.log(opponentBucketDistribution)
+
+    const get_plan_query = {
+      text: "SELECT plan, plan_end FROM users WHERE email = $1",
+      values: [email]
+    }
+    const planInfo = await postgres.query(get_plan_query)
+    // console.log(BigInt(planInfo.rows[0].plan_end))
+    // console.log(planInfo.rows[0].plan == 'premium')
+    // console.log(BigInt(planInfo.rows[0].plan_end + "00"))
+    // console.log(BigInt(Math.floor(Date.now() / 1000)))
+    let numSimulations = 100
+    if ((BigInt(planInfo.rows[0].plan_end) > BigInt(Math.floor(Date.now() / 1000))) && planInfo.rows[0].plan == 'basic') {
+      numSimulations = 1000
+    }
+    else if ((BigInt(planInfo.rows[0].plan_end) > BigInt(Math.floor(Date.now() / 1000))) && planInfo.rows[0].plan == 'standard') {
+      numSimulations = 10000
+    }
+    else if ((BigInt(planInfo.rows[0].plan_end) > BigInt(Math.floor(Date.now() / 1000))) && planInfo.rows[0].plan == 'premium') {
+      numSimulations = 50000
+    }
+
+
     let userSample = [];
     let opponentSample = [];
     let wins = 0
     let i = 0;
-    while (i < 100000) {
+    while (i < numSimulations) {
       const playersUncorrelatedSample = createPlayersUncorrelatedSample(playersNormalDistribution)
       //console.log(playersUncorrelatedSample)
       const playersCorrelatedSample = createPlayersCorrelatedSample(choleskyDecompositionMatrix, playersUncorrelatedSample)

@@ -95,12 +95,16 @@ const stripeWebhook = async (req, res) => {
         }
         const plan_id = data.lines.data[0].plan.id
         let plan;
-        if (plan_id == 'price_1NgCh2BUPgZpckEJZ8KLvfDo') {
+        if (plan_id == 'price_1No9HHBUPgZpckEJeD4tPO5k') {
           plan = 'basic'
         }
-        else if (plan_id == 'price_1NgCfgBUPgZpckEJDHw7lxOk') {
+        else if (plan_id == 'price_1No9I5BUPgZpckEJr1ECbiYu') {
+          plan = 'standard'
+        }
+        else if (plan_id == 'price_1No9IfBUPgZpckEJUI7dLf5X') {
           plan = 'premium'
         }
+
         const plan_end = data.lines.data[0].period.end
         const add_plan_query = {
           text: "UPDATE users SET plan = $2, plan_end = $3 WHERE stripe_id = $1",
@@ -152,10 +156,13 @@ const stripeWebhook = async (req, res) => {
         }
         const plan_id = data.items.data[0].price.id
         let plan;
-        if (plan_id == 'price_1NgCh2BUPgZpckEJZ8KLvfDo') {
+        if (plan_id == 'price_1No9HHBUPgZpckEJeD4tPO5k') {
           plan = 'basic'
         }
-        else if (plan_id == 'price_1NgCfgBUPgZpckEJDHw7lxOk') {
+        else if (plan_id == 'price_1No9I5BUPgZpckEJr1ECbiYu') {
+          plan = 'standard'
+        }
+        else if (plan_id == 'price_1No9IfBUPgZpckEJUI7dLf5X') {
           plan = 'premium'
         }
         const plan_end = data.current_period_end
